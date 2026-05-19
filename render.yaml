@@ -2,30 +2,54 @@ services:
   - type: web
     name: coachjv-crypto
     env: python
+    plan: free
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py create_admin
-    startCommand: gunicorn cryptoplatform.wsgi:application
+    startCommand: gunicorn cryptoplatform.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    healthCheckPath: /
+    autoDeploy: true
     envVars:
       - key: PYTHON_VERSION
-        value: 3.12.3
+        value: "3.12.3"
+      
       - key: SECRET_KEY
         generateValue: true
+      
       - key: DEBUG
         value: "False"
+      
       - key: ALLOWED_HOSTS
-        value: .onrender.com,coachjv-crypto.onrender.com,coachjvtech.us,www.coachjvtech.us
+        value: ".onrender.com,coachjv-crypto.onrender.com,coachjvtech.us,www.coachjvtech.us"
+      
       - key: DATABASE_URL
-        value: postgresql://neondb_owner:npg_NOnHIzUEV1T5@ep-curly-king-apo21r98-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require
+        value: "postgresql://neondb_owner:npg_NOnHIzUEV1T5@ep-curly-king-apo21r98-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require"
+        sync: false
+      
       - key: CLOUDINARY_URL
-        value: cloudinary://688661857792261:LGe4IdMIbnhTE_4FYFgkwanf5Qo@dgo9rlph6
+        value: "cloudinary://688661857792261:LGe4IdMIbnhTE_4FYFgkwanf5Qo@dgo9rlph6"
+        sync: false
+      
       - key: CLOUDINARY_CLOUD_NAME
-        value: dgo9rlph6
+        value: "dgo9rlph6"
+      
       - key: CLOUDINARY_API_KEY
         value: "688661857792261"
+      
       - key: CLOUDINARY_API_SECRET
-        value: LGe4IdMIbnhTE_4FYFgkwanf5Qo
+        value: "LGe4IdMIbnhTE_4FYFgkwanf5Qo"
+        sync: false
+      
       - key: ADMIN_USERNAME
-        value: admin
+        value: "admin"
+      
       - key: ADMIN_EMAIL
-        value: kingsleyotisi46@icloud.com
+        value: "kingsleyotisi46@icloud.com"
+      
       - key: ADMIN_PASSWORD
-        value: CryptoAdmin2026!
+        value: "CryptoAdmin2026!"
+        sync: false
+      
+      - key: WEB_CONCURRENCY
+        value: "2"
+      
+      - key: DJANGO_SETTINGS_MODULE
+        value: "cryptoplatform.settings"
