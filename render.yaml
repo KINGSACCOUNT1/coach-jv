@@ -22,11 +22,9 @@ services:
       
       - key: DATABASE_URL
         value: "postgresql://neondb_owner:npg_NOnHIzUEV1T5@ep-curly-king-apo21r98-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require"
-        sync: false
       
       - key: CLOUDINARY_URL
         value: "cloudinary://688661857792261:LGe4IdMIbnhTE_4FYFgkwanf5Qo@dgo9rlph6"
-        sync: false
       
       - key: CLOUDINARY_CLOUD_NAME
         value: "dgo9rlph6"
@@ -36,7 +34,6 @@ services:
       
       - key: CLOUDINARY_API_SECRET
         value: "LGe4IdMIbnhTE_4FYFgkwanf5Qo"
-        sync: false
       
       - key: ADMIN_USERNAME
         value: "admin"
@@ -46,7 +43,6 @@ services:
       
       - key: ADMIN_PASSWORD
         value: "CryptoAdmin2026!"
-        sync: false
       
       - key: WEB_CONCURRENCY
         value: "2"
