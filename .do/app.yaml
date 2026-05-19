@@ -1,0 +1,71 @@
+name: coachjv-crypto
+region: nyc
+
+services:
+  - name: web
+    environment_slug: python
+    github:
+      repo: KINGSACCOUNT1/coach-jv
+      branch: main
+      deploy_on_push: true
+    
+    build_command: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    
+    run_command: |
+      python manage.py migrate
+      gunicorn cryptoplatform.wsgi:application --bind 0.0.0.0:$PORT
+    
+    http_port: 8080
+    
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    
+    envs:
+      - key: PYTHON_VERSION
+        value: "3.12.3"
+      
+      - key: SECRET_KEY
+        value: "django-insecure-dev-key-change-in-production-please"
+        type: SECRET
+      
+      - key: DEBUG
+        value: "False"
+      
+      - key: ALLOWED_HOSTS
+        value: ".ondigitalocean.app,coachjvtech.us,www.coachjvtech.us"
+      
+      - key: DATABASE_URL
+        value: "postgresql://neondb_owner:npg_NOnHIzUEV1T5@ep-curly-king-apo21r98-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require"
+        type: SECRET
+      
+      - key: CLOUDINARY_URL
+        value: "cloudinary://688661857792261:LGe4IdMIbnhTE_4FYFgkwanf5Qo@dgo9rlph6"
+        type: SECRET
+      
+      - key: CLOUDINARY_CLOUD_NAME
+        value: "dgo9rlph6"
+      
+      - key: CLOUDINARY_API_KEY
+        value: "688661857792261"
+      
+      - key: CLOUDINARY_API_SECRET
+        value: "LGe4IdMIbnhTE_4FYFgkwanf5Qo"
+        type: SECRET
+      
+      - key: ADMIN_USERNAME
+        value: "admin"
+      
+      - key: ADMIN_EMAIL
+        value: "kingsleyotisi46@icloud.com"
+      
+      - key: ADMIN_PASSWORD
+        value: "CryptoAdmin2026!"
+        type: SECRET
+      
+      - key: DISABLE_COLLECTSTATIC
+        value: "1"
+
+    health_check:
+      http_path: /
