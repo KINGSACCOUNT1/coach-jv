@@ -12,7 +12,7 @@ services:
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS
-        value: .onrender.com,coachjv-crypto.onrender.com
+        value: .onrender.com,coachjv-crypto.onrender.com,coachjvtech.us,www.coachjvtech.us
       - key: DATABASE_URL
         value: postgresql://neondb_owner:npg_NOnHIzUEV1T5@ep-curly-king-apo21r98-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require
       - key: CLOUDINARY_URL
