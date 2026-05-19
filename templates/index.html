@@ -40,9 +40,36 @@
             padding: 12px 0;
             overflow: hidden;
             border-bottom: 2px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 999;
+            position: relative;
+            z-index: 998;
+        }
+        
+        /* Middle Ticker (Reverse Direction) */
+        .ticker-wrapper-middle {
+            background: linear-gradient(90deg, rgba(26, 31, 58, 0.5) 0%, rgba(15, 18, 41, 0.5) 100%);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            overflow: hidden;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin: 60px 0;
+        }
+        
+        .ticker-wrapper-middle .ticker-content {
+            animation: scrollTickerReverse 35s linear infinite;
+        }
+        
+        /* Footer Ticker (Slower) */
+        .ticker-wrapper-footer {
+            background: linear-gradient(90deg, rgba(10, 31, 68, 0.8) 0%, rgba(5, 11, 26, 0.8) 100%);
+            backdrop-filter: blur(15px);
+            padding: 18px 0;
+            overflow: hidden;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .ticker-wrapper-footer .ticker-content {
+            animation: scrollTicker 50s linear infinite;
         }
         
         .ticker-content {
@@ -51,9 +78,18 @@
             white-space: nowrap;
         }
         
+        .ticker-content:hover {
+            animation-play-state: paused;
+        }
+        
         @keyframes scrollTicker {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
+        }
+        
+        @keyframes scrollTickerReverse {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
         }
         
         .ticker-item {
@@ -110,43 +146,167 @@
             background: rgba(255, 71, 87, 0.1);
         }
         
-        /* Navbar */
+        /* Enhanced Sticky Navbar */
         .navbar {
-            background: rgba(10, 14, 39, 0.98);
+            background: rgba(10, 31, 68, 0.95);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 1.2rem 0;
             border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .navbar.scrolled {
+            padding: 0.8rem 0;
+            background: rgba(10, 31, 68, 0.98);
+            box-shadow: 0 4px 40px rgba(255, 215, 0, 0.1);
         }
         
         .navbar-brand {
             font-size: 2rem;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-brand:hover {
+            transform: scale(1.05);
         }
         
         .nav-link {
-            color: #fff !important;
+            color: rgba(255, 255, 255, 0.85) !important;
             font-weight: 500;
             margin: 0 15px;
+            padding: 8px 16px !important;
+            border-radius: 8px;
             transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
         }
         
         .nav-link:hover {
             color: var(--accent) !important;
-            transform: translateY(-2px);
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .nav-link:hover::before {
+            width: 70%;
+        }
+        
+        .nav-link.active {
+            color: var(--accent) !important;
+            background: rgba(255, 215, 0, 0.15);
         }
         
         .btn-get-started {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
             border: none;
             padding: 12px 30px;
             border-radius: 30px;
             font-weight: 600;
-            color: #fff;
+            color: var(--primary);
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn-get-started:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+        }
+        
+        /* Enhanced Mobile Menu */
+        .navbar-toggler {
+            border: 2px solid var(--accent);
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-toggler:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: scale(1.05);
+        }
+        
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 215, 0, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: rgba(10, 31, 68, 0.98);
+                backdrop-filter: blur(20px);
+                margin-top: 20px;
+                padding: 30px;
+                border-radius: 16px;
+                border: 1px solid var(--border-color);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            }
+            
+            .nav-link {
+                margin: 8px 0;
+                padding: 15px 20px !important;
+                border-radius: 12px;
+            }
+            
+            .nav-item {
+                margin: 5px 0;
+            }
+        }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: var(--primary);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+        }
+        
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
         }
         
         .btn-get-started:hover {
@@ -1214,6 +1374,13 @@
         </div>
     </section>
     
+    <!-- Middle Crypto Ticker 1 (Reverse Direction) -->
+    <div class="ticker-wrapper-middle">
+        <div class="ticker-content" id="middleTicker">
+            <!-- Will be populated by JavaScript -->
+        </div>
+    </div>
+    
     <!-- Video Section -->
     <section class="video-section">
         <div class="container">
@@ -1444,9 +1611,9 @@
         </div>
     </section>
     
-    <!-- Bottom Scrolling Ticker -->
-    <div class="ticker-wrapper-bottom">
-        <div class="ticker-bottom" id="bottomTicker">
+    <!-- Footer Crypto Ticker (Slower) -->
+    <div class="ticker-wrapper-footer">
+        <div class="ticker-content" id="footerTicker">
             <!-- Populated by JavaScript -->
         </div>
     </div>
@@ -1754,7 +1921,9 @@
         // Render top ticker
         function renderTickers() {
             const topTicker = document.getElementById('topTicker');
-            const bottomTicker = document.getElementById('bottomTicker');
+            const middleTicker = document.getElementById('middleTicker');
+            const middleTicker2 = document.getElementById('middleTicker2');
+            const footerTicker = document.getElementById('footerTicker');
             
             let tickerHTML = '';
             // Duplicate array twice for seamless scrolling
@@ -1776,8 +1945,11 @@
                 `;
             });
             
-            topTicker.innerHTML = tickerHTML;
-            bottomTicker.innerHTML = tickerHTML;
+            // Populate all tickers
+            if (topTicker) topTicker.innerHTML = tickerHTML;
+            if (middleTicker) middleTicker.innerHTML = tickerHTML;
+            if (middleTicker2) middleTicker2.innerHTML = tickerHTML;
+            if (footerTicker) footerTicker.innerHTML = tickerHTML;
         }
         
         // Render live price cards
@@ -1889,6 +2061,66 @@
             duration: 800,
             once: true,
             offset: 50
+        });
+        
+        // Enhanced Navigation Effects
+        const navbar = document.querySelector('.navbar');
+        const backToTop = document.getElementById('backToTop');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+                backToTop.classList.add('show');
+            } else {
+                navbar.classList.remove('scrolled');
+                backToTop.classList.remove('show');
+            }
+            
+            // Active section highlighting
+            const sections = document.querySelectorAll('section[id]');
+            const scrollY = window.pageYOffset;
+            
+            sections.forEach(section => {
+                const sectionHeight = section.offsetHeight;
+                const sectionTop = section.offsetTop - 100;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+        
+        // Back to top button
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scroll for nav links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
         });
         
         // Update prices every 3 seconds
