@@ -2,10 +2,10 @@
 nixPkgs = ["python312", "postgresql"]
 
 [phases.install]
-cmds = ["cd coachjvtech && pip install -r requirements.txt"]
+cmds = ["python -m pip install -r requirements.txt"]
 
 [phases.build]
-cmds = ["cd coachjvtech && python manage.py collectstatic --noinput"]
+cmds = ["python manage.py collectstatic --noinput"]
 
 [start]
-cmd = "cd coachjvtech && python manage.py migrate && gunicorn cryptoplatform.wsgi:application --bind 0.0.0.0:$PORT"
+cmd = "python manage.py migrate && gunicorn cryptoplatform.wsgi:application --bind 0.0.0.0:$PORT"
