@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: cryptoplatform
+    name: coachjv-crypto
     env: python
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py create_admin
     startCommand: gunicorn cryptoplatform.wsgi:application
@@ -12,11 +12,9 @@ services:
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS
-        value: .onrender.com,micro-crypto.onrender.com,cryptoplatform.onrender.com
+        value: .onrender.com,coachjv-crypto.onrender.com
       - key: DATABASE_URL
-        fromDatabase:
-          name: cryptoplatform-db
-          property: connectionString
+        value: postgresql://neondb_owner:npg_NOnHIzUEV1T5@ep-curly-king-apo21r98-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require
       - key: CLOUDINARY_URL
         value: cloudinary://688661857792261:LGe4IdMIbnhTE_4FYFgkwanf5Qo@dgo9rlph6
       - key: CLOUDINARY_CLOUD_NAME
@@ -31,7 +29,3 @@ services:
         value: kingsleyotisi46@icloud.com
       - key: ADMIN_PASSWORD
         value: CryptoAdmin2026!
-
-databases:
-  - name: cryptoplatform-db
-    plan: free
