@@ -1,0 +1,355 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Live Events & Webinars | CoachJVTech{% endblock %}
+
+{% block extra_css %}
+<style>
+    .events-hero {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-bottom: 30px;
+        color: white;
+    }
+    
+    .event-card {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+    }
+    
+    .event-card.live {
+        border-color: #ef4444;
+        box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
+        animation: pulse 2s infinite;
+    }
+    
+    .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 50px;
+        background: #ef4444;
+        color: white;
+        font-weight: 600;
+        animation: pulse 2s infinite;
+    }
+    
+    .live-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: white;
+        animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+    
+    .event-type-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .type-webinar { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .type-coaching { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    .type-workshop { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+    .type-qa { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+    
+    .countdown {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ef4444;
+    }
+    
+    .recording-card {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .recording-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+    }
+    
+    .thumbnail {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Events Hero -->
+    <div class="events-hero">
+        <h1 class="mb-2"><i class="fas fa-video"></i> Live Events & Webinars</h1>
+        <p class="mb-0">Join our weekly coaching calls and exclusive member events</p>
+    </div>
+
+    <!-- Upcoming Live Event -->
+    {% if live_event %}
+    <div class="event-card live">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+                <span class="live-badge">
+                    <span class="live-indicator"></span>
+                    LIVE NOW
+                </span>
+                <span class="event-type-badge type-{{ live_event.type }} ms-2">{{ live_event.get_type_display }}</span>
+            </div>
+            <button class="btn btn-danger btn-lg">
+                <i class="fas fa-video"></i> Join Live
+            </button>
+        </div>
+        <h3>{{ live_event.title }}</h3>
+        <p class="text-muted">{{ live_event.description }}</p>
+        <div class="d-flex gap-3 text-muted">
+            <span><i class="fas fa-users"></i> {{ live_event.attendees }} watching</span>
+            <span><i class="fas fa-user"></i> Host: {{ live_event.host }}</span>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Upcoming Events -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h4 class="mb-3">📅 Upcoming Events</h4>
+        </div>
+        
+        {% for event in upcoming_events %}
+        <div class="col-md-6">
+            <div class="event-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="event-type-badge type-{{ event.type }}">{{ event.get_type_display }}</span>
+                    {% if event.is_member_only %}
+                    <span class="badge bg-warning">Members Only</span>
+                    {% endif %}
+                </div>
+                <h5>{{ event.title }}</h5>
+                <p class="text-muted">{{ event.description|truncatewords:20 }}</p>
+                
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Date & Time</small>
+                        <div class="fw-bold">{{ event.scheduled_date|date:"M d, Y g:i A" }}</div>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Duration</small>
+                        <div class="fw-bold">{{ event.duration_minutes }} minutes</div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        <i class="fas fa-user"></i> {{ event.host }}
+                    </small>
+                    {% if event.is_registered %}
+                    <button class="btn btn-success" disabled>
+                        <i class="fas fa-check"></i> Registered
+                    </button>
+                    {% else %}
+                    <button class="btn btn-primary" onclick="registerEvent({{ event.id }})">
+                        <i class="fas fa-calendar-plus"></i> Register
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <!-- Sample Events -->
+        <div class="col-md-6">
+            <div class="event-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="event-type-badge type-coaching">Weekly Coaching Call</span>
+                    <span class="badge bg-warning">Members Only</span>
+                </div>
+                <h5>3T Warrior Strategy Session</h5>
+                <p class="text-muted">Deep dive into the 3T trading framework with live chart analysis and Q&A</p>
+                
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Date & Time</small>
+                        <div class="fw-bold">May 20, 2026 7:00 PM</div>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Duration</small>
+                        <div class="fw-bold">90 minutes</div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted"><i class="fas fa-user"></i> Coach JV</small>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-calendar-plus"></i> Register
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="event-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="event-type-badge type-webinar">Webinar</span>
+                </div>
+                <h5>Cryptocurrency Market Outlook 2026</h5>
+                <p class="text-muted">Expert analysis on market trends, upcoming regulations, and investment opportunities</p>
+                
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Date & Time</small>
+                        <div class="fw-bold">May 22, 2026 6:00 PM</div>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Duration</small>
+                        <div class="fw-bold">60 minutes</div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted"><i class="fas fa-user"></i> Market Analyst Team</small>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-calendar-plus"></i> Register
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Past Recordings -->
+    <div class="row">
+        <div class="col-12">
+            <h4 class="mb-3">📼 Past Event Recordings</h4>
+        </div>
+        
+        {% for recording in recordings %}
+        <div class="col-md-4">
+            <div class="recording-card">
+                <div class="thumbnail">
+                    {% if recording.thumbnail %}
+                    <img src="{{ recording.thumbnail.url }}" alt="{{ recording.title }}">
+                    {% else %}
+                    <i class="fas fa-video"></i>
+                    {% endif %}
+                </div>
+                <div class="p-3">
+                    <span class="event-type-badge type-{{ recording.type }} mb-2">{{ recording.get_type_display }}</span>
+                    <h6 class="mt-2">{{ recording.title }}</h6>
+                    <p class="small text-muted mb-2">{{ recording.recorded_date|date:"M d, Y" }} • {{ recording.duration_minutes }} min</p>
+                    <button class="btn btn-primary btn-sm w-100">
+                        <i class="fas fa-play"></i> Watch Recording
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <!-- Sample Recordings -->
+        <div class="col-md-4">
+            <div class="recording-card">
+                <div class="thumbnail"><i class="fas fa-video"></i></div>
+                <div class="p-3">
+                    <span class="event-type-badge type-coaching mb-2">Coaching Call</span>
+                    <h6 class="mt-2">Advanced Trading Strategies</h6>
+                    <p class="small text-muted mb-2">May 15, 2026 • 85 min</p>
+                    <button class="btn btn-primary btn-sm w-100">
+                        <i class="fas fa-play"></i> Watch Recording
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="recording-card">
+                <div class="thumbnail"><i class="fas fa-video"></i></div>
+                <div class="p-3">
+                    <span class="event-type-badge type-webinar mb-2">Webinar</span>
+                    <h6 class="mt-2">Bitcoin Technical Analysis</h6>
+                    <p class="small text-muted mb-2">May 10, 2026 • 60 min</p>
+                    <button class="btn btn-primary btn-sm w-100">
+                        <i class="fas fa-play"></i> Watch Recording
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="recording-card">
+                <div class="thumbnail"><i class="fas fa-video"></i></div>
+                <div class="p-3">
+                    <span class="event-type-badge type-workshop mb-2">Workshop</span>
+                    <h6 class="mt-2">Risk Management Masterclass</h6>
+                    <p class="small text-muted mb-2">May 5, 2026 • 120 min</p>
+                    <button class="btn btn-primary btn-sm w-100">
+                        <i class="fas fa-play"></i> Watch Recording
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Event Registration Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">Register for Event</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <p>You're registering for: <strong id="eventTitle"></strong></p>
+                    <div class="mb-3">
+                        <label class="form-label">Email Reminder</label>
+                        <select class="form-select bg-dark text-white border-secondary" name="reminder">
+                            <option value="1hour">1 hour before</option>
+                            <option value="1day">1 day before</option>
+                            <option value="1week">1 week before</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="fas fa-check"></i> Confirm Registration
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function registerEvent(eventId) {
+        // Show registration modal
+        const modal = new bootstrap.Modal(document.getElementById('registerModal'));
+        modal.show();
+    }
+</script>
+{% endblock %}

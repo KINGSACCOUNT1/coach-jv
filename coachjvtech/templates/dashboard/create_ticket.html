@@ -1,0 +1,74 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Create Support Ticket{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-plus-circle me-2"></i>Create Support Ticket</h2>
+            <p class="text-muted">Our support team typically responds within 2-24 hours</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="data-card">
+                <div class="data-card-header">
+                    <h5>Submit Your Question</h5>
+                </div>
+                <div class="data-card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Subject *</label>
+                            <input type="text" class="form-control" name="subject" required 
+                                   placeholder="Brief description of your issue">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Priority *</label>
+                            <select class="form-select" name="priority" required>
+                                <option value="low">Low - General question</option>
+                                <option value="medium" selected>Medium - Need assistance</option>
+                                <option value="high">High - Issue affecting my account</option>
+                                <option value="urgent">Urgent - Critical problem</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Message *</label>
+                            <textarea class="form-control" name="message" rows="8" required
+                                      placeholder="Please provide detailed information about your issue..."></textarea>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i> 
+                                Tip: Include relevant details like transaction IDs, error messages, or screenshots
+                            </small>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong><i class="fas fa-shield-alt me-2"></i>Privacy & Security</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Never share your password or private keys</li>
+                                <li>All tickets are encrypted and secure</li>
+                                <li>Only support staff can view your tickets</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'support_tickets' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Back
+                            </a>
+                            <button type="submit" class="btn btn-primary-gradient">
+                                <i class="fas fa-paper-plane me-1"></i> Submit Ticket
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

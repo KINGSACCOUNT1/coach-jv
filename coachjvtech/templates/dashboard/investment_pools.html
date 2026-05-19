@@ -1,0 +1,215 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block title %}Investment Pools - CoachJVTech{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-1"><i class="fas fa-coins"></i> Investment Pools</h2>
+                    <p class="text-muted">Professionally managed crypto investment pools</p>
+                </div>
+                <div>
+                    <a href="{% url 'my_investments' %}" class="btn btn-primary">
+                        <i class="fas fa-briefcase me-2"></i>My Investments
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User's Available Balance -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-dark border-primary">
+                <div class="card-body">
+                    <h6 class="text-muted mb-2">Available for Investment</h6>
+                    <h3 class="mb-0">{{ usdt_balance|floatformat:2 }} USDT</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User's Active Pools -->
+    {% if user_shares %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <h4 class="mb-3"><i class="fas fa-chart-line"></i> Your Active Investments</h4>
+        </div>
+        {% for share in user_shares %}
+        <div class="col-md-6 mb-3">
+            <div class="card bg-dark border-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h5 class="mb-1">{{ share.pool.name }}</h5>
+                            <span class="badge bg-{{ share.pool.risk_level|default:'secondary' }}">
+                                {{ share.pool.get_risk_level_display }}
+                            </span>
+                        </div>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <small class="text-muted d-block">Shares Owned</small>
+                            <strong>{{ share.shares_owned|floatformat:4 }}</strong>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted d-block">Total Invested</small>
+                            <strong>{{ share.total_invested|floatformat:2 }} USDT</strong>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <small class="text-muted d-block">Current Value</small>
+                            <strong class="text-success">{{ share.current_value|floatformat:2 }} USDT</strong>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <small class="text-muted d-block">Profit/Loss</small>
+                            {% with pl=share.calculate_profit_loss %}
+                            <strong class="{% if pl >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                {{ pl|floatformat:2 }} USDT ({% widthratio pl share.total_invested 100 %}%)
+                            </strong>
+                            {% endwith %}
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <a href="{% url 'pool_detail' share.pool.id %}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-chart-line me-1"></i>View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Available Pools -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <h4 class="mb-3">🌟 Available Investment Pools</h4>
+        </div>
+    </div>
+
+    {% if pools %}
+    <div class="row">
+        {% for pool in pools %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card bg-dark border-{% if pool.featured %}warning{% else %}secondary{% endif %} h-100">
+                {% if pool.featured %}
+                <div class="card-header bg-warning text-dark">
+                    <i class="fas fa-star me-1"></i><strong>Featured Pool</strong>
+                </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title mb-2">{{ pool.name }}</h5>
+                    <span class="badge bg-{% if pool.risk_level == 'conservative' %}success{% elif pool.risk_level == 'balanced' %}warning{% else %}danger{% endif %} mb-3">
+                        {{ pool.get_risk_level_display }}
+                    </span>
+                    
+                    <p class="text-muted small">{{ pool.description|truncatewords:20 }}</p>
+                    
+                    <!-- Pool Stats -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <small class="text-muted">ROI</small>
+                            <strong class="{% if pool.roi_percentage >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                {{ pool.roi_percentage|floatformat:2 }}%
+                            </strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <small class="text-muted">Total Value</small>
+                            <strong>{{ pool.total_value|floatformat:0 }} {{ pool.currency }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <small class="text-muted">Share Price</small>
+                            <strong>{{ pool.share_price|floatformat:2 }} {{ pool.currency }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <small class="text-muted">Min Investment</small>
+                            <strong>{{ pool.min_investment|floatformat:0 }} {{ pool.currency }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">Lock Period</small>
+                            <strong>{{ pool.lock_period_days }} days</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'pool_detail' pool.id %}" class="btn btn-primary">
+                            <i class="fas fa-eye me-2"></i>View Details
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-transparent border-top border-secondary">
+                    <small class="text-muted">
+                        <i class="fas fa-shield-alt me-1"></i>Managed Fee: {{ pool.management_fee_percent }}% annual
+                    </small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>No investment pools available at this time. Check back soon!
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Info Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card bg-dark border-primary">
+                <div class="card-body">
+                    <h5 class="mb-3"><i class="fas fa-info-circle me-2"></i>About Investment Pools</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-primary"><i class="fas fa-lock"></i> Secure</h6>
+                            <p class="small text-muted">All pools are professionally managed with transparent tracking and secure custody.</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-primary"><i class="fas fa-chart-line"></i> Performance</h6>
+                            <p class="small text-muted">Track real-time performance, ROI, and trading history for complete transparency.</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-primary"><i class="fas fa-coins"></i> Flexible</h6>
+                            <p class="small text-muted">Invest and withdraw at your convenience after the lock period ends.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.65rem;
+    }
+    
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    
+    .bg-conservative { background-color: #10B981; }
+    .bg-balanced { background-color: #F59E0B; }
+    .bg-aggressive { background-color: #EF4444; }
+</style>
+{% endblock %}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CoachJVTech Logo Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1a1a2e;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        canvas {
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            background: white;
+            margin: 20px 0;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        h1 {
+            color: #667eea;
+        }
+        p {
+            color: #a0a0b0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CoachJVTech Logo Generator</h1>
+        <p>Click buttons to generate and download your logo files</p>
+        
+        <canvas id="logoCanvas" width="512" height="512"></canvas>
+        
+        <div>
+            <button onclick="generateLogo('main')">Generate Main Logo</button>
+            <button onclick="generateLogo('white')">Generate White Logo</button>
+            <button onclick="generateLogo('icon')">Generate Icon Only</button>
+            <button onclick="generateFavicon()">Generate Favicon</button>
+        </div>
+    </div>
+
+    <script>
+        function generateLogo(type) {
+            const canvas = document.getElementById('logoCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (type === 'main' || type === 'white') {
+                // Set background
+                if (type === 'main') {
+                    ctx.fillStyle = 'white';
+                } else {
+                    ctx.fillStyle = 'transparent';
+                }
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw gradient circle
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                gradient.addColorStop(0, '#667eea');
+                gradient.addColorStop(1, '#764ba2');
+                
+                ctx.beginPath();
+                ctx.arc(256, 200, 120, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Draw C and J letters
+                ctx.font = 'bold 140px Arial';
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.fillText('CJ', 256, 225);
+                
+                // Draw text
+                ctx.font = 'bold 48px Arial';
+                if (type === 'white') {
+                    ctx.fillStyle = 'white';
+                } else {
+                    ctx.fillStyle = gradient;
+                }
+                ctx.fillText('CoachJVTech', 256, 380);
+                
+                ctx.font = '24px Arial';
+                ctx.fillStyle = '#a0a0b0';
+                ctx.fillText('Wealth Ecosystem Platform', 256, 420);
+                
+            } else if (type === 'icon') {
+                // Icon only - smaller canvas
+                canvas.width = 128;
+                canvas.height = 128;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                gradient.addColorStop(0, '#667eea');
+                gradient.addColorStop(1, '#764ba2');
+                
+                ctx.beginPath();
+                ctx.arc(64, 64, 50, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                ctx.font = 'bold 50px Arial';
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.fillText('CJ', 64, 80);
+                
+                canvas.width = 512;
+                canvas.height = 512;
+            }
+            
+            // Download
+            downloadCanvas(canvas, `logo-${type}.png`);
+        }
+        
+        function generateFavicon() {
+            const canvas = document.getElementById('logoCanvas');
+            canvas.width = 32;
+            canvas.height = 32;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            ctx.beginPath();
+            ctx.arc(16, 16, 14, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            ctx.font = 'bold 18px Arial';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.fillText('C', 16, 22);
+            
+            // Download as ICO format (actually PNG)
+            downloadCanvas(canvas, 'favicon.png');
+            
+            canvas.width = 512;
+            canvas.height = 512;
+        }
+        
+        function downloadCanvas(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Generate main logo on page load
+        window.onload = function() {
+            generateLogo('main');
+        };
+    </script>
+</body>
+</html>

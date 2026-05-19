@@ -1,0 +1,248 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block title %}My Investments - CoachJVTech{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-1"><i class="fas fa-chart-line"></i> My Investment Portfolio</h2>
+                    <p class="text-muted">Track your pool investments and performance</p>
+                </div>
+                <div>
+                    <a href="{% url 'investment_pools' %}" class="btn btn-primary">
+                        <i class="fas fa-plus-circle me-2"></i>Explore Pools
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Summary -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-dark border-info">
+                <div class="card-body">
+                    <small class="text-muted d-block mb-1">Total Invested</small>
+                    <h3 class="mb-0">{{ total_invested|floatformat:2 }}</h3>
+                    <small class="text-muted">USDT</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-dark border-success">
+                <div class="card-body">
+                    <small class="text-muted d-block mb-1">Current Value</small>
+                    <h3 class="mb-0 text-success">{{ total_current_value|floatformat:2 }}</h3>
+                    <small class="text-muted">USDT</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-dark border-{% if total_profit_loss >= 0 %}success{% else %}danger{% endif %}">
+                <div class="card-body">
+                    <small class="text-muted d-block mb-1">Total P&L</small>
+                    <h3 class="mb-0 {% if total_profit_loss >= 0 %}text-success{% else %}text-danger{% endif %}">
+                        {% if total_profit_loss >= 0 %}+{% endif %}{{ total_profit_loss|floatformat:2 }}
+                    </h3>
+                    <small class="text-muted">USDT</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-dark border-warning">
+                <div class="card-body">
+                    <small class="text-muted d-block mb-1">Total ROI</small>
+                    <h3 class="mb-0 {% if total_roi >= 0 %}text-success{% else %}text-danger{% endif %}">
+                        {% if total_roi >= 0 %}+{% endif %}{{ total_roi|floatformat:2 }}%
+                    </h3>
+                    <small class="text-muted">Return on Investment</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Investments -->
+    {% if user_shares %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-briefcase me-2"></i>Active Pool Investments</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Pool Name</th>
+                                    <th>Risk Level</th>
+                                    <th>Shares Owned</th>
+                                    <th>Total Invested</th>
+                                    <th>Current Value</th>
+                                    <th>P&L</th>
+                                    <th>ROI</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for share in user_shares %}
+                                {% with pl=share.calculate_profit_loss %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ share.pool.name }}</strong>
+                                        <br><small class="text-muted">{{ share.pool.currency }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{% if share.pool.risk_level == 'conservative' %}success{% elif share.pool.risk_level == 'balanced' %}warning{% else %}danger{% endif %}">
+                                            {{ share.pool.get_risk_level_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ share.shares_owned|floatformat:4 }}</td>
+                                    <td>{{ share.total_invested|floatformat:2 }}</td>
+                                    <td class="text-success"><strong>{{ share.current_value|floatformat:2 }}</strong></td>
+                                    <td class="{% if pl >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                        <strong>{% if pl >= 0 %}+{% endif %}{{ pl|floatformat:2 }}</strong>
+                                    </td>
+                                    <td class="{% if pl >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                        {% if share.total_invested > 0 %}
+                                        <strong>{% if pl >= 0 %}+{% endif %}{% widthratio pl share.total_invested 100 %}%</strong>
+                                        {% else %}
+                                        0%
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'pool_detail' share.pool.id %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endwith %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <h5><i class="fas fa-info-circle me-2"></i>No Active Investments</h5>
+                <p class="mb-2">You haven't invested in any pools yet. Start building your portfolio today!</p>
+                <a href="{% url 'investment_pools' %}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle me-2"></i>Explore Investment Pools
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Recent Transactions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recent Transactions</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_transactions %}
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Pool</th>
+                                    <th>Type</th>
+                                    <th>Shares</th>
+                                    <th>Share Price</th>
+                                    <th>Amount</th>
+                                    <th>Fee</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tx in recent_transactions %}
+                                <tr>
+                                    <td>{{ tx.created_at|date:"Y-m-d H:i" }}</td>
+                                    <td><strong>{{ tx.pool.name }}</strong></td>
+                                    <td>
+                                        <span class="badge bg-{% if tx.type == 'investment' %}success{% elif tx.type == 'withdrawal' %}danger{% else %}secondary{% endif %}">
+                                            {{ tx.get_type_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ tx.shares|floatformat:4 }}</td>
+                                    <td>{{ tx.share_price|floatformat:2 }}</td>
+                                    <td class="{% if tx.type == 'investment' %}text-danger{% else %}text-success{% endif %}">
+                                        {% if tx.type == 'investment' %}-{% else %}+{% endif %}{{ tx.amount|floatformat:2 }}
+                                    </td>
+                                    <td>{{ tx.fee|floatformat:2 }}</td>
+                                    <td>
+                                        <span class="badge bg-{% if tx.status == 'completed' %}success{% elif tx.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                                            {{ tx.get_status_display }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted mb-0">No transactions yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Tips -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card bg-dark border-primary">
+                <div class="card-body">
+                    <h5 class="mb-3"><i class="fas fa-lightbulb me-2 text-warning"></i>Investment Tips</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-primary"><i class="fas fa-bullseye"></i> Diversify</h6>
+                            <p class="small text-muted">Spread investments across multiple pools with different risk levels for balanced growth.</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-primary"><i class="fas fa-chart-line"></i> Monitor Performance</h6>
+                            <p class="small text-muted">Regularly check pool performance and adjust your portfolio based on ROI and risk tolerance.</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-primary">⏰ Long-term Focus</h6>
+                            <p class="small text-muted">Respect lock periods and consider long-term gains. Cryptocurrency markets can be volatile.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-dark {
+        --bs-table-bg: transparent;
+    }
+    
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.65rem;
+    }
+    
+    .card {
+        transition: transform 0.2s;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}

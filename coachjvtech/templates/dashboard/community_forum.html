@@ -1,0 +1,225 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Community Forum | CoachJVTech{% endblock %}
+
+{% block extra_css %}
+<style>
+    .forum-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-bottom: 30px;
+        color: white;
+    }
+    
+    .category-card {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        border-color: rgba(139, 92, 246, 0.5);
+    }
+    
+    .category-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+    
+    .post-card {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .post-card:hover {
+        border-color: rgba(139, 92, 246, 0.5);
+        cursor: pointer;
+    }
+    
+    .post-card.pinned {
+        border-color: #f59e0b;
+        background: linear-gradient(135deg, #2a2414 0%, #3a3014 100%);
+    }
+    
+    .post-meta {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: #9ca3af;
+        font-size: 0.9rem;
+    }
+    
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+    }
+    
+    .badge-pinned {
+        background: #f59e0b;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .badge-locked {
+        background: #ef4444;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .stats-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 10px;
+        background: rgba(139, 92, 246, 0.2);
+        border-radius: 10px;
+        font-size: 0.85rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Forum Hero -->
+    <div class="forum-hero">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-0"><i class="fas fa-comments"></i> Community Forum</h1>
+                <p class="mb-0 mt-2">Connect, learn, and share with the CoachJV community</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <button class="btn btn-light btn-lg" style="border-radius: 10px;">
+                    <i class="fas fa-plus"></i> New Discussion
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forum Categories -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="fas fa-folder-open"></i> Discussion Categories</h3>
+        </div>
+        {% for category in categories %}
+        <div class="col-md-6 col-lg-4">
+            <div class="category-card text-center">
+                <div class="category-icon">{{ category.icon }}</div>
+                <h4>{{ category.name }}</h4>
+                <p class="text-muted mb-3">{{ category.description }}</p>
+                <div class="stats-badge">
+                    <i class="fas fa-comments"></i> {{ category.post_count }} Posts
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                No categories available yet. Check back soon!
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Recent Posts -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-3">🔥 Recent Discussions</h3>
+        </div>
+        <div class="col-12">
+            {% for post in posts %}
+            <div class="post-card {% if post.is_pinned %}pinned{% endif %}">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="avatar">
+                                {{ post.author.username|slice:":1"|upper }}
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="mb-2">
+                                    {% if post.is_pinned %}<span class="badge-pinned">📌 Pinned</span>{% endif %}
+                                    {% if post.is_locked %}<span class="badge-locked"><i class="fas fa-lock"></i> Locked</span>{% endif %}
+                                </div>
+                                <h5 class="mb-1">{{ post.title }}</h5>
+                                <div class="post-meta">
+                                    <span><strong>{{ post.author.username }}</strong></span>
+                                    <span>•</span>
+                                    <span>{{ post.created_at|timesince }} ago</span>
+                                    <span>•</span>
+                                    <span class="badge bg-primary">{{ post.category.name }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="post-meta justify-content-end">
+                            <span class="stats-badge">
+                                <i class="fas fa-eye"></i> {{ post.views }}
+                            </span>
+                            <span class="stats-badge">
+                                <i class="fas fa-comments"></i> {{ post.reply_count }}
+                            </span>
+                            <span class="stats-badge">
+                                <i class="fas fa-heart"></i> {{ post.get_like_count }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info">
+                No discussions yet. Be the first to start a conversation!
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if posts.has_other_pages %}
+    <nav aria-label="Forum pagination">
+        <ul class="pagination justify-content-center">
+            {% if posts.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            {% for num in posts.paginator.page_range %}
+            <li class="page-item {% if posts.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+            
+            {% if posts.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

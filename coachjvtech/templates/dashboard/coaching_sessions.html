@@ -1,0 +1,287 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Coaching Sessions | CoachJVTech{% endblock %}
+
+{% block extra_css %}
+<style>
+    .coaching-hero {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-bottom: 30px;
+        color: white;
+    }
+    
+    .session-card {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .session-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        border-color: rgba(16, 185, 129, 0.5);
+    }
+    
+    .session-card.scheduled {
+        border-color: rgba(59, 130, 246, 0.5);
+    }
+    
+    .session-card.completed {
+        border-color: rgba(107, 114, 128, 0.5);
+        opacity: 0.8;
+    }
+    
+    .calendar-widget {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 25px;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+    
+    .availability-slot {
+        padding: 15px;
+        margin: 10px 0;
+        background: rgba(16, 185, 129, 0.1);
+        border: 2px solid rgba(16, 185, 129, 0.3);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .availability-slot:hover {
+        background: rgba(16, 185, 129, 0.2);
+        border-color: rgba(16, 185, 129, 0.6);
+    }
+    
+    .availability-slot.selected {
+        background: rgba(16, 185, 129, 0.3);
+        border-color: #10b981;
+    }
+    
+    .coach-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+    }
+    
+    .status-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .status-badge.scheduled { background: #3b82f6; color: white; }
+    .status-badge.completed { background: #6b7280; color: white; }
+    .status-badge.cancelled { background: #ef4444; color: white; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Coaching Hero -->
+    <div class="coaching-hero">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-0"><i class="fas fa-graduation-cap"></i> Private Coaching</h1>
+                <p class="mb-0 mt-2">One-on-one guidance from trading experts</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <button class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#bookSessionModal" 
+                        style="border-radius: 10px;">
+                    <i class="fas fa-calendar-plus"></i> Book Session
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Membership Info -->
+    {% if not has_access %}
+    <div class="alert alert-warning d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <i class="fas fa-lock fa-2x me-3"></i>
+            <strong>Upgrade Required:</strong> Private coaching is available for Warrior tier and above.
+        </div>
+        <a href="{% url 'membership_tiers' %}" class="btn btn-warning">
+            View Plans
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <!-- Upcoming Sessions -->
+        <div class="col-lg-8">
+            <h3 class="mb-3">📅 Your Coaching Sessions</h3>
+            
+            {% for session in sessions %}
+            <div class="session-card {{ session.status }}">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <div class="mb-2">
+                            <span class="status-badge {{ session.status }}">
+                                {% if session.status == 'scheduled' %}🗓️{% elif session.status == 'completed' %}<i class="fas fa-check-circle text-success"></i>{% else %}<i class="fas fa-times-circle text-danger"></i>{% endif %}
+                                {{ session.get_status_display }}
+                            </span>
+                            {% if session.coach %}
+                            <span class="coach-badge ms-2">
+                                👨‍🏫 Coach: {{ session.coach.first_name }} {{ session.coach.last_name }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <h4 class="mb-2">{{ session.title }}</h4>
+                        <p class="text-muted mb-2">{{ session.description|truncatewords:20 }}</p>
+                        
+                        <div class="d-flex gap-3 text-muted">
+                            <span><i class="fas fa-calendar"></i> {{ session.scheduled_date|date:"M d, Y" }}</span>
+                            <span><i class="fas fa-clock"></i> {{ session.scheduled_date|time:"g:i A" }}</span>
+                            <span><i class="fas fa-hourglass"></i> {{ session.duration_minutes }} mins</span>
+                        </div>
+                        
+                        {% if session.topics %}
+                        <div class="mt-2">
+                            <small><strong>Topics:</strong> {{ session.topics|truncatewords:15 }}</small>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-4 text-end">
+                        {% if session.status == 'scheduled' %}
+                            {% if session.meeting_link %}
+                            <a href="{{ session.meeting_link }}" target="_blank" class="btn btn-success btn-lg mb-2 w-100">
+                                <i class="fas fa-video"></i> Join Meeting
+                            </a>
+                            {% endif %}
+                            <button class="btn btn-outline-danger w-100">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        {% elif session.status == 'completed' %}
+                            <button class="btn btn-outline-primary w-100">
+                                <i class="fas fa-file-alt"></i> View Notes
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> No coaching sessions booked yet. Book your first session to get started!
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Calendar Widget -->
+            <div class="calendar-widget mb-4">
+                <h5 class="mb-3"><i class="fas fa-calendar"></i> Available Times</h5>
+                <p class="text-muted small mb-3">Select a time slot to book your session</p>
+                
+                <!-- Sample availability slots -->
+                <div class="availability-slot">
+                    <strong>Monday, May 20</strong>
+                    <br><small class="text-muted">2:00 PM - 3:00 PM EST</small>
+                </div>
+                <div class="availability-slot">
+                    <strong>Tuesday, May 21</strong>
+                    <br><small class="text-muted">10:00 AM - 11:00 AM EST</small>
+                </div>
+                <div class="availability-slot">
+                    <strong>Wednesday, May 22</strong>
+                    <br><small class="text-muted">4:00 PM - 5:00 PM EST</small>
+                </div>
+                <div class="availability-slot">
+                    <strong>Thursday, May 23</strong>
+                    <br><small class="text-muted">1:00 PM - 2:00 PM EST</small>
+                </div>
+                <div class="availability-slot">
+                    <strong>Friday, May 24</strong>
+                    <br><small class="text-muted">11:00 AM - 12:00 PM EST</small>
+                </div>
+            </div>
+
+            <!-- Session Types -->
+            <div class="calendar-widget">
+                <h5 class="mb-3"><i class="fas fa-bullseye"></i> Session Types</h5>
+                <div class="mb-3">
+                    <strong>One-on-One (60 mins)</strong>
+                    <p class="small text-muted mb-0">Personalized trading strategy session</p>
+                </div>
+                <div class="mb-3">
+                    <strong>Group Session (90 mins)</strong>
+                    <p class="small text-muted mb-0">Learn with other traders</p>
+                </div>
+                <div class="mb-3">
+                    <strong>Workshop (2+ hours)</strong>
+                    <p class="small text-muted mb-0">Deep dive into specific topics</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Book Session Modal -->
+<div class="modal fade" id="bookSessionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">📅 Book Coaching Session</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Session Type</label>
+                        <select class="form-select bg-dark text-white border-secondary" name="session_type" required>
+                            <option value="one_on_one">One-on-One (60 mins)</option>
+                            <option value="group">Group Session (90 mins)</option>
+                            <option value="workshop">Workshop (2+ hours)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Session Title</label>
+                        <input type="text" class="form-control bg-dark text-white border-secondary" 
+                               name="title" placeholder="e.g., Bitcoin Trading Strategy Review" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Topics / Goals</label>
+                        <textarea class="form-control bg-dark text-white border-secondary" 
+                                  name="topics" rows="3" placeholder="What would you like to focus on?"></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Preferred Date</label>
+                            <input type="date" class="form-control bg-dark text-white border-secondary" 
+                                   name="scheduled_date" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Preferred Time</label>
+                            <input type="time" class="form-control bg-dark text-white border-secondary" 
+                                   name="scheduled_time" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100 btn-lg">
+                        <i class="fas fa-check"></i> Request Session
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

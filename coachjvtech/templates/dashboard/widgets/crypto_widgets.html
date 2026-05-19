@@ -1,0 +1,123 @@
+{% load static %}
+
+<!-- Crypto Widgets Collection -->
+
+<!-- Price Ticker Widget -->
+<div id="crypto-ticker-widget" style="height:62px; background-color: #1D2330; overflow:hidden; box-sizing: border-box; border: 1px solid #282E3B; border-radius: 4px; text-align: right; line-height:14px; block-size:62px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; padding:1px;padding: 0px; margin: 0px; width: 100%;">
+    <div style="height:40px; padding:0px; margin:0px; width: 100%;">
+        <iframe src="https://widget.coinlib.io/widget?type=horizontal_v2&theme=dark&pref_coin_id=1505&invert_hover=no" width="100%" height="36px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;"></iframe>
+    </div>
+    <div style="color: #626B7F; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;">
+        <a href="https://coinlib.io" target="_blank" style="font-weight: 500; color: #626B7F; text-decoration:none; font-size:11px">Cryptocurrency Prices</a>&nbsp;by Coinlib
+    </div>
+</div>
+
+<!-- Market Cap & Volume Widget -->
+<div class="crypto-widget-card mb-3" style="background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%); border-radius: 15px; padding: 20px; border: 1px solid rgba(139, 92, 246, 0.2);">
+    <h5 class="mb-3"><i class="fas fa-chart-pie"></i> Top Cryptocurrencies</h5>
+    <div id="crypto-market-widget" style="border-radius:10px; overflow:hidden;">
+        <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script>
+        <div class="coinmarketcap-currency-widget" data-currencyid="1" data-base="USD" data-secondary="" data-ticker="true" data-rank="true" data-marketcap="true" data-volume="true" data-statsticker="false" data-stats="USD"></div>
+        <div class="coinmarketcap-currency-widget" data-currencyid="1027" data-base="USD" data-secondary="" data-ticker="true" data-rank="true" data-marketcap="true" data-volume="true" data-statsticker="false" data-stats="USD"></div>
+        <div class="coinmarketcap-currency-widget" data-currencyid="825" data-base="USD" data-secondary="" data-ticker="true" data-rank="true" data-marketcap="true" data-volume="true" data-statsticker="false" data-stats="USD"></div>
+    </div>
+</div>
+
+<!-- Trending Coins Widget -->
+<div class="crypto-widget-card mb-3" style="background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%); border-radius: 15px; padding: 20px; border: 1px solid rgba(139, 92, 246, 0.2);">
+    <h5 class="mb-3">🔥 Trending Now</h5>
+    <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,binancecoin,solana,ripple,cardano,dogecoin,polkadot" currency="usd" background-color="#1e1e2e" locale="en" font-color="#ffffff"></coingecko-coin-price-marquee-widget>
+</div>
+
+<!-- Fear & Greed Index Widget -->
+<div class="crypto-widget-card mb-3" style="background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%); border-radius: 15px; padding: 20px; border: 1px solid rgba(139, 92, 246, 0.2); text-align: center;">
+    <h5 class="mb-3"><i class="fas fa-exclamation-triangle"></i> Fear & Greed Index</h5>
+    <a href="https://alternative.me/crypto/fear-and-greed-index/" target="_blank">
+        <img src="https://alternative.me/crypto/fear-and-greed-index.png" alt="Crypto Fear & Greed Index" style="max-width: 100%; border-radius: 10px;" />
+    </a>
+    <p class="text-muted mt-2 small">
+        The index measures market sentiment from 0 (Extreme Fear) to 100 (Extreme Greed)
+    </p>
+</div>
+
+<!-- Bitcoin Dominance Widget -->
+<div class="crypto-widget-card mb-3" style="background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%); border-radius: 15px; padding: 20px; border: 1px solid rgba(139, 92, 246, 0.2);">
+    <h5 class="mb-3"><i class="fas fa-chart-line"></i> Bitcoin Dominance</h5>
+    <div id="coinmarketcap-widget-coin-chart" coins="1" currency="1" theme="dark" transparent="false" show-symbol-logo="true"></div>
+    <script src="https://files.coinmarketcap.com/static/widget/coinChart.js"></script>
+</div>
+
+<!-- Live Price Chart Widget -->
+<div class="crypto-widget-card mb-3" style="background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%); border-radius: 15px; padding: 20px; border: 1px solid rgba(139, 92, 246, 0.2);">
+    <h5 class="mb-3"><i class="fas fa-chart-line"></i> Live Bitcoin Chart</h5>
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container">
+        <div id="tradingview_btc_chart"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script type="text/javascript">
+        new TradingView.widget({
+            "autosize": true,
+            "symbol": "BINANCE:BTCUSDT",
+            "interval": "D",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "locale": "en",
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": false,
+            "allow_symbol_change": true,
+            "container_id": "tradingview_btc_chart",
+            "height": "400",
+            "width": "100%"
+        });
+        </script>
+    </div>
+    <!-- TradingView Widget END -->
+</div>
+
+<!-- Gas Tracker Widget (Ethereum) -->
+<div class="crypto-widget-card mb-3" style="background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%); border-radius: 15px; padding: 20px; border: 1px solid rgba(139, 92, 246, 0.2);">
+    <h5 class="mb-3">⛽ Ethereum Gas Tracker</h5>
+    <div id="ethgas-widget">
+        <iframe src="https://ethgas.watch/embed/bar" width="100%" height="280" frameborder="0" style="border-radius: 10px; overflow: hidden;"></iframe>
+    </div>
+</div>
+
+<!-- Crypto Converter Widget -->
+<div class="crypto-widget-card mb-3" style="background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%); border-radius: 15px; padding: 20px; border: 1px solid rgba(139, 92, 246, 0.2);">
+    <h5 class="mb-3">💱 Crypto Converter</h5>
+    <script src="https://widgets.coingecko.com/coingecko-coin-converter-widget.js"></script>
+    <coingecko-coin-converter-widget coin-id="bitcoin" currency="usd" background-color="#1e1e2e" font-color="#ffffff" locale="en"></coingecko-coin-converter-widget>
+</div>
+
+<!-- Compact Price List Widget -->
+<div class="crypto-widget-card mb-3" style="background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%); border-radius: 15px; padding: 20px; border: 1px solid rgba(139, 92, 246, 0.2);">
+    <h5 class="mb-3"><i class="fas fa-coins"></i> Quick Prices</h5>
+    <coingecko-coin-list-widget coin-ids="bitcoin,ethereum,binancecoin,ripple,cardano,solana,polkadot,dogecoin,avalanche-2,polygon" currency="usd" locale="en" width="100%"></coingecko-coin-list-widget>
+</div>
+
+<!-- Load CoinGecko Widget Scripts -->
+<script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
+<script src="https://widgets.coingecko.com/coingecko-coin-list-widget.js"></script>
+
+<style>
+    /* Widget responsive styling */
+    @media (max-width: 768px) {
+        .crypto-widget-card {
+            padding: 15px !important;
+        }
+        .crypto-widget-card h5 {
+            font-size: 1rem !important;
+        }
+    }
+    
+    /* Dark theme overrides for widgets */
+    iframe {
+        border: none;
+        border-radius: 10px;
+    }
+    
+    .coinmarketcap-currency-widget {
+        margin-bottom: 10px;
+    }
+</style>

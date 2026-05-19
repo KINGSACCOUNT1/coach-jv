@@ -1,0 +1,168 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Ticket #{{ ticket.id }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2><i class="fas fa-ticket-alt me-2"></i>Ticket #{{ ticket.id }}</h2>
+            <p class="text-muted">{{ ticket.subject }}</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'support_tickets' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Back to Tickets
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Ticket Thread -->
+            <div class="data-card mb-4">
+                <div class="data-card-header">
+                    <h5>Conversation</h5>
+                    <span class="badge {% if ticket.status == 'open' %}badge-warning{% elif ticket.status == 'in_progress' %}badge-info{% elif ticket.status == 'resolved' %}badge-success{% else %}badge-secondary{% endif %}">
+                        {{ ticket.get_status_display }}
+                    </span>
+                </div>
+                <div class="data-card-body">
+                    <!-- Original Message -->
+                    <div class="mb-4 p-3" style="background: rgba(102, 126, 234, 0.1); border-radius: 10px; border-left: 3px solid var(--accent);">
+                        <div class="d-flex align-items-start mb-2">
+                            <div class="user-avatar me-2">{{ ticket.user.username|slice:":1"|upper }}</div>
+                            <div>
+                                <strong>{{ ticket.user.username }}</strong>
+                                <small class="text-muted d-block">{{ ticket.created_at|date:"F d, Y \a\t H:i" }}</small>
+                            </div>
+                        </div>
+                        <div class="mt-2">{{ ticket.message|linebreaks }}</div>
+                    </div>
+
+                    <!-- Replies -->
+                    {% for reply in replies %}
+                    <div class="mb-3 p-3" style="background: {% if reply.is_staff %}rgba(0, 255, 136, 0.1){% else %}rgba(102, 126, 234, 0.05){% endif %}; border-radius: 10px; {% if reply.is_staff %}border-left: 3px solid var(--success);{% endif %}">
+                        <div class="d-flex align-items-start mb-2">
+                            <div class="user-avatar me-2" style="{% if reply.is_staff %}background: linear-gradient(135deg, #00ff88, #00cc66);{% endif %}">
+                                {{ reply.user.username|slice:":1"|upper }}
+                            </div>
+                            <div>
+                                <strong>{{ reply.user.username }}</strong>
+                                {% if reply.is_staff %}
+                                    <span class="badge badge-success ms-2">Support Staff</span>
+                                {% endif %}
+                                <small class="text-muted d-block">{{ reply.created_at|date:"F d, Y \a\t H:i" }}</small>
+                            </div>
+                        </div>
+                        <div class="mt-2">{{ reply.message|linebreaks }}</div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Reply Form -->
+                    {% if ticket.status != 'closed' %}
+                    <form method="post" class="mt-4">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Add Reply</label>
+                            <textarea class="form-control" name="message" rows="4" required 
+                                      placeholder="Type your reply..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary-gradient">
+                            <i class="fas fa-reply me-1"></i> Send Reply
+                        </button>
+                    </form>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        This ticket is closed. Create a new ticket if you need further assistance.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Ticket Info -->
+            <div class="data-card">
+                <div class="data-card-header">
+                    <h5>Ticket Information</h5>
+                </div>
+                <div class="data-card-body">
+                    <div class="mb-3">
+                        <label class="text-muted small">TICKET ID</label>
+                        <div><strong>#{{ ticket.id }}</strong></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-muted small">STATUS</label>
+                        <div>
+                            {% if ticket.status == 'open' %}
+                                <span class="badge badge-warning">Open</span>
+                            {% elif ticket.status == 'in_progress' %}
+                                <span class="badge badge-info">In Progress</span>
+                            {% elif ticket.status == 'resolved' %}
+                                <span class="badge badge-success">Resolved</span>
+                            {% else %}
+                                <span class="badge" style="background: rgba(108, 117, 125, 0.2); color: #6c757d;">Closed</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-muted small">PRIORITY</label>
+                        <div>
+                            {% if ticket.priority == 'urgent' %}
+                                <span class="badge badge-danger"><i class="fas fa-circle text-danger"></i> Urgent</span>
+                            {% elif ticket.priority == 'high' %}
+                                <span class="badge badge-warning">🟠 High</span>
+                            {% elif ticket.priority == 'medium' %}
+                                <span class="badge badge-info"><i class="fas fa-circle text-warning"></i> Medium</span>
+                            {% else %}
+                                <span class="badge badge-success"><i class="fas fa-circle text-success"></i> Low</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-muted small">CREATED</label>
+                        <div>{{ ticket.created_at|date:"F d, Y H:i" }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-muted small">LAST UPDATED</label>
+                        <div>{{ ticket.updated_at|date:"F d, Y H:i" }}</div>
+                    </div>
+                    <div class="mb-0">
+                        <label class="text-muted small">REPLIES</label>
+                        <div><strong>{{ replies.count }}</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="data-card mt-3">
+                <div class="data-card-header">
+                    <h5>Need More Help?</h5>
+                </div>
+                <div class="data-card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'create_ticket' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-plus me-1"></i> New Ticket
+                        </a>
+                        <button class="btn btn-outline-success" onclick="startLiveChat()">
+                            <i class="fas fa-comments me-1"></i> Live Chat
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function startLiveChat() {
+    if (typeof Tawk_API !== 'undefined') {
+        Tawk_API.maximize();
+    } else {
+        alert('Live chat is loading...');
+    }
+}
+</script>
+{% endblock %}

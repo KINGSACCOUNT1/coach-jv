@@ -1,0 +1,289 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Market News & Updates | CoachJVTech{% endblock %}
+
+{% block extra_css %}
+<style>
+    .news-hero {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-bottom: 30px;
+        color: white;
+    }
+    
+    .news-card {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .news-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+        cursor: pointer;
+    }
+    
+    .news-category {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-right: 8px;
+    }
+    
+    .category-breaking { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .category-analysis { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .category-strategy { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    .category-market { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+    
+    .alert-banner {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        color: white;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.85; }
+    }
+    
+    .market-summary {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+    
+    .rss-feed {
+        max-height: 600px;
+        overflow-y: auto;
+    }
+    
+    .feed-item {
+        padding: 15px;
+        border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+    }
+    
+    .feed-item:last-child {
+        border-bottom: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- News Hero -->
+    <div class="news-hero">
+        <h1 class="mb-2"><i class="fas fa-newspaper"></i> Market News & Updates</h1>
+        <p class="mb-0">Stay informed with the latest crypto market insights</p>
+    </div>
+
+    <!-- Market Alerts -->
+    {% if alerts %}
+    <div class="alert-banner">
+        <div class="d-flex align-items-center gap-3">
+            <i class="fas fa-exclamation-triangle fa-2x"></i>
+            <div>
+                <strong>Market Alert:</strong> {{ alerts.0.message }}
+                <br><small>{{ alerts.0.created_at|timesince }} ago</small>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Market Summary -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="market-summary">
+                <h5 class="mb-3"><i class="fas fa-chart-line"></i> Today's Market Summary</h5>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <div class="text-muted mb-2">Bitcoin</div>
+                            <div class="h4 text-success">$67,234 <small class="text-success">+2.4%</small></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <div class="text-muted mb-2">Ethereum</div>
+                            <div class="h4 text-success">$3,450 <small class="text-success">+1.8%</small></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <div class="text-muted mb-2">Total Market Cap</div>
+                            <div class="h4">$2.5T</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <div class="text-muted mb-2">Fear & Greed</div>
+                            <div class="h4 text-warning">62 (Greed)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- CoachJV Insights -->
+        <div class="col-lg-8">
+            <h4 class="mb-3"><i class="fas fa-lightbulb"></i> CoachJV Insights</h4>
+            
+            {% for article in articles %}
+            <div class="news-card" onclick="location.href='{% url 'news_detail' article.id %}'">
+                <div class="mb-2">
+                    <span class="news-category category-{{ article.category }}">
+                        {{ article.get_category_display }}
+                    </span>
+                    <small class="text-muted">{{ article.created_at|date:"M d, Y" }}</small>
+                </div>
+                <h5>{{ article.title }}</h5>
+                <p class="text-muted">{{ article.summary|truncatewords:30 }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        <i class="fas fa-user"></i> {{ article.author.get_full_name|default:"Admin" }}
+                    </small>
+                    <a href="{% url 'news_detail' article.id %}" class="btn btn-sm btn-outline-primary">
+                        Read More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Sample News Articles -->
+            <div class="news-card">
+                <div class="mb-2">
+                    <span class="news-category category-breaking">Breaking News</span>
+                    <small class="text-muted">Today, 10:30 AM</small>
+                </div>
+                <h5>Bitcoin Reaches New All-Time High Above $70,000</h5>
+                <p class="text-muted">
+                    Bitcoin has surged past $70,000 for the first time, driven by institutional adoption 
+                    and positive regulatory developments. Market analysts predict further upside potential...
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted"><i class="fas fa-user"></i> CoachJV Team</small>
+                    <button class="btn btn-sm btn-outline-primary">Read More <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="news-card">
+                <div class="mb-2">
+                    <span class="news-category category-analysis">Market Analysis</span>
+                    <small class="text-muted">Yesterday, 3:45 PM</small>
+                </div>
+                <h5>Weekly Technical Analysis: Key Support Levels to Watch</h5>
+                <p class="text-muted">
+                    This week's technical analysis reveals critical support and resistance levels across major 
+                    cryptocurrencies. BTC maintains strong support at $65,000 while ETH consolidates...
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted"><i class="fas fa-user"></i> Chief Analyst</small>
+                    <button class="btn btn-sm btn-outline-primary">Read More <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="news-card">
+                <div class="mb-2">
+                    <span class="news-category category-strategy">Strategy Recommendation</span>
+                    <small class="text-muted">May 16, 2026</small>
+                </div>
+                <h5>3T Warrior Strategy: Positioning for the Next Bull Run</h5>
+                <p class="text-muted">
+                    Based on current market conditions and our proprietary 3T framework, we recommend 
+                    a balanced approach with 60% BTC, 30% altcoins, and 10% stable coins for optimal risk-reward...
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted"><i class="fas fa-user"></i> Strategy Team</small>
+                    <button class="btn btn-sm btn-outline-primary">Read More <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- External News Feed -->
+        <div class="col-lg-4">
+            <h5 class="mb-3"><i class="fas fa-globe"></i> Latest Crypto News</h5>
+            <div class="market-summary rss-feed">
+                <!-- RSS Feed Integration -->
+                <div class="feed-item">
+                    <h6 class="mb-1">SEC Approves New Bitcoin ETF Applications</h6>
+                    <small class="text-muted">CoinDesk • 2 hours ago</small>
+                    <p class="small text-muted mb-0 mt-2">
+                        The Securities and Exchange Commission has approved three new Bitcoin ETF applications...
+                    </p>
+                </div>
+                
+                <div class="feed-item">
+                    <h6 class="mb-1">Ethereum 2.0 Staking Surpasses 30M ETH</h6>
+                    <small class="text-muted">CoinTelegraph • 4 hours ago</small>
+                    <p class="small text-muted mb-0 mt-2">
+                        Total value locked in Ethereum 2.0 staking has reached a new milestone...
+                    </p>
+                </div>
+                
+                <div class="feed-item">
+                    <h6 class="mb-1">Major Bank Announces Crypto Trading Services</h6>
+                    <small class="text-muted">Bloomberg Crypto • 6 hours ago</small>
+                    <p class="small text-muted mb-0 mt-2">
+                        One of the world's largest banks is launching cryptocurrency trading services for clients...
+                    </p>
+                </div>
+                
+                <div class="feed-item">
+                    <h6 class="mb-1">DeFi Total Value Locked Hits $100B</h6>
+                    <small class="text-muted">The Block • 8 hours ago</small>
+                    <p class="small text-muted mb-0 mt-2">
+                        Decentralized finance protocols have collectively surpassed $100 billion in total value locked...
+                    </p>
+                </div>
+                
+                <div class="feed-item">
+                    <h6 class="mb-1">New Regulations Proposed for Crypto Exchanges</h6>
+                    <small class="text-muted">Decrypt • 10 hours ago</small>
+                    <p class="small text-muted mb-0 mt-2">
+                        Regulatory bodies worldwide are proposing new frameworks for cryptocurrency exchanges...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Price Alerts -->
+            <div class="market-summary mt-3">
+                <h6 class="mb-3"><i class="fas fa-bell"></i> Your Price Alerts</h6>
+                <div class="feed-item">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <strong>BTC > $70,000</strong>
+                            <br><small class="text-muted">Active</small>
+                        </div>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                </div>
+                <div class="feed-item">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <strong>ETH < $3,200</strong>
+                            <br><small class="text-muted">Active</small>
+                        </div>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-sm w-100 mt-3">
+                    <i class="fas fa-plus"></i> Create Alert
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

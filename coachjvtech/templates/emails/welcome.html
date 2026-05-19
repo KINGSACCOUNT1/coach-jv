@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to CoachJVTech</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .logo {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .content {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .features {
+            background-color: #F3F4F6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .feature-item {
+            margin: 10px 0;
+            padding: 10px;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: #4F46E5;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo"><i class="fas fa-rocket"></i> Welcome to CoachJVTech!</div>
+            <p>Your Professional Crypto Trading Platform</p>
+        </div>
+
+        <div class="content">
+            <p>Hello <strong>{{ user.first_name|default:user.username }}</strong>,</p>
+            <p>Thank you for joining <strong>CoachJVTech</strong>! We're excited to have you on board.</p>
+            <p>Your account has been successfully created and you're ready to start your crypto trading journey with us.</p>
+        </div>
+
+        <div class="features">
+            <h3 style="color: #4F46E5; margin-top: 0;">What You Can Do:</h3>
+            <div class="feature-item"><i class="fas fa-check-circle text-success"></i> <strong>Multi-Currency Wallets</strong> - BTC, ETH, USDT, and more</div>
+            <div class="feature-item"><i class="fas fa-coins"></i> <strong>Investment Pools</strong> - Join managed crypto investment pools</div>
+            <div class="feature-item"><i class="fas fa-chart-line"></i> <strong>Spot Trading</strong> - Trade cryptocurrencies with real-time prices</div>
+            <div class="feature-item"><i class="fas fa-hammer"></i> <strong>Cloud Mining</strong> - Invest in mining contracts</div>
+            <div class="feature-item"><i class="fas fa-handshake"></i> <strong>P2P Trading</strong> - Peer-to-peer crypto exchange</div>
+            <div class="feature-item"><i class="fas fa-lock"></i> <strong>Secure Platform</strong> - KYC verification & 2FA security</div>
+        </div>
+
+        <div class="content">
+            <p><strong>Next Steps:</strong></p>
+            <ol>
+                <li>Complete your KYC verification to unlock all features</li>
+                <li>Explore investment pools and trading options</li>
+                <li>Make your first deposit and start trading</li>
+            </ol>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="#" class="button">Go to Dashboard</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>Need Help?</strong><br>
+            Contact our support team anytime through the dashboard.</p>
+            <p><strong>CoachJVTech</strong><br>
+            Built by Coach JV for Professional Crypto Investors</p>
+            <p style="font-size: 12px; color: #aaa;">
+                © 2026 CoachJVTech. All rights reserved.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

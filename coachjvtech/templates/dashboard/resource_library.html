@@ -1,0 +1,313 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Resource Library | CoachJVTech{% endblock %}
+
+{% block extra_css %}
+<style>
+    .library-hero {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-bottom: 30px;
+        color: white;
+    }
+    
+    .resource-card {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .resource-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        cursor: pointer;
+    }
+    
+    .resource-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+    
+    .icon-ebook { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .icon-video { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .icon-podcast { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+    .icon-article { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+    .icon-guide { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    
+    .category-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .category-tab {
+        padding: 10px 20px;
+        border-radius: 50px;
+        border: 2px solid rgba(139, 92, 246, 0.3);
+        background: transparent;
+        color: #9ca3af;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .category-tab.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+        color: white;
+    }
+    
+    .download-badge {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Library Hero -->
+    <div class="library-hero">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-2"><i class="fas fa-book"></i> Learning Resource Library</h1>
+                <p class="mb-0">Access our comprehensive collection of educational materials</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <button class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    <i class="fas fa-search"></i> Search Resources
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+        <button class="category-tab active" onclick="filterCategory('all')">All Resources</button>
+        <button class="category-tab" onclick="filterCategory('ebook')">📕 E-Books</button>
+        <button class="category-tab" onclick="filterCategory('video')"><i class="fas fa-video"></i> Videos</button>
+        <button class="category-tab" onclick="filterCategory('podcast')">🎙️ Podcasts</button>
+        <button class="category-tab" onclick="filterCategory('article')"><i class="fas fa-newspaper"></i> Articles</button>
+        <button class="category-tab" onclick="filterCategory('guide')">📖 Guides</button>
+    </div>
+
+    <!-- Featured Resource -->
+    <div class="resource-card" style="border-color: rgba(245, 158, 11, 0.5);">
+        <div class="row align-items-center">
+            <div class="col-md-2">
+                <div class="resource-icon icon-guide" style="width: 80px; height: 80px; font-size: 3rem;">📘</div>
+            </div>
+            <div class="col-md-8">
+                <span class="badge bg-warning mb-2">Featured</span>
+                <h4>The Complete 3T Warriors Guide</h4>
+                <p class="text-muted mb-2">Master the Three-Tier trading framework used by professional traders. Includes strategy guides, risk management techniques, and real-world examples.</p>
+                <span class="download-badge"><i class="fas fa-download"></i> 2,543 downloads</span>
+            </div>
+            <div class="col-md-2 text-end">
+                <button class="btn btn-success btn-lg">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Grid -->
+    <div class="row">
+        <div class="col-12">
+            <h4 class="mb-3">📖 Available Resources</h4>
+        </div>
+
+        <!-- E-Books -->
+        <div class="col-md-4" data-category="ebook">
+            <div class="resource-card">
+                <div class="resource-icon icon-ebook">📕</div>
+                <h5>Cryptocurrency Trading 101</h5>
+                <p class="text-muted small mb-3">Beginner's guide to crypto trading covering fundamentals, market analysis, and trading strategies.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="download-badge"><i class="fas fa-download"></i> 1,234</span>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" data-category="ebook">
+            <div class="resource-card">
+                <div class="resource-icon icon-ebook">📕</div>
+                <h5>Advanced Technical Analysis</h5>
+                <p class="text-muted small mb-3">Deep dive into chart patterns, indicators, and advanced trading techniques.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="download-badge"><i class="fas fa-download"></i> 892</span>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Videos -->
+        <div class="col-md-4" data-category="video">
+            <div class="resource-card">
+                <div class="resource-icon icon-video"><i class="fas fa-video"></i></div>
+                <h5>Bitcoin Masterclass Series</h5>
+                <p class="text-muted small mb-3">10-part video series covering Bitcoin trading, investment, and security best practices.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="download-badge"><i class="fas fa-eye"></i> 5,432 views</span>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-play"></i> Watch Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Podcasts -->
+        <div class="col-md-4" data-category="podcast">
+            <div class="resource-card">
+                <div class="resource-icon icon-podcast">🎙️</div>
+                <h5>Crypto Market Weekly Podcast</h5>
+                <p class="text-muted small mb-3">Weekly market analysis and trading insights from industry experts.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="download-badge"><i class="fas fa-headphones"></i> 3,221 listens</span>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-play"></i> Listen
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Articles -->
+        <div class="col-md-4" data-category="article">
+            <div class="resource-card">
+                <div class="resource-icon icon-article"><i class="fas fa-newspaper"></i></div>
+                <h5>DeFi Investment Strategies</h5>
+                <p class="text-muted small mb-3">Comprehensive guide to decentralized finance investing and yield farming.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="download-badge"><i class="fas fa-book-open"></i> 2,156 reads</span>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-arrow-right"></i> Read Article
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guides -->
+        <div class="col-md-4" data-category="guide">
+            <div class="resource-card">
+                <div class="resource-icon icon-guide">📖</div>
+                <h5>Risk Management Blueprint</h5>
+                <p class="text-muted small mb-3">Essential risk management strategies for cryptocurrency traders and investors.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="download-badge"><i class="fas fa-download"></i> 1,678</span>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" data-category="video">
+            <div class="resource-card">
+                <div class="resource-icon icon-video"><i class="fas fa-video"></i></div>
+                <h5>Trading Psychology Course</h5>
+                <p class="text-muted small mb-3">Master your mindset and emotions for better trading decisions.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="download-badge"><i class="fas fa-eye"></i> 4,112 views</span>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-play"></i> Watch Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" data-category="ebook">
+            <div class="resource-card">
+                <div class="resource-icon icon-ebook">📕</div>
+                <h5>NFT Trading Handbook</h5>
+                <p class="text-muted small mb-3">Complete guide to trading and investing in Non-Fungible Tokens.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="download-badge"><i class="fas fa-download"></i> 756</span>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" data-category="article">
+            <div class="resource-card">
+                <div class="resource-icon icon-article"><i class="fas fa-newspaper"></i></div>
+                <h5>Altcoin Season Preparation</h5>
+                <p class="text-muted small mb-3">How to identify and prepare for altcoin bull runs.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="download-badge"><i class="fas fa-book-open"></i> 1,892 reads</span>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-arrow-right"></i> Read Article
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">Search Resources</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text bg-dark border-secondary">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" class="form-control bg-dark text-white border-secondary" 
+                           placeholder="Search by title, topic, or keyword..." id="searchInput">
+                </div>
+                <div id="searchResults">
+                    <p class="text-muted text-center">Type to search resources...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function filterCategory(category) {
+        const allCards = document.querySelectorAll('[data-category]');
+        const tabs = document.querySelectorAll('.category-tab');
+        
+        // Update tabs
+        tabs.forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Filter cards
+        if (category === 'all') {
+            allCards.forEach(card => card.style.display = 'block');
+        } else {
+            allCards.forEach(card => {
+                card.style.display = card.getAttribute('data-category') === category ? 'block' : 'none';
+            });
+        }
+    }
+</script>
+{% endblock %}

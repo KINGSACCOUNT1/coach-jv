@@ -1,0 +1,424 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Mining Pools - Professional | CoachJVTech{% endblock %}
+
+{% block extra_css %}
+<style>
+    .mining-hero {
+        background: linear-gradient(135deg, #76b900 0%, #589700 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-bottom: 30px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .mining-hero::before {
+        content: '<i class="fas fa-hammer"></i>';
+        position: absolute;
+        top: -30px;
+        right: -30px;
+        font-size: 200px;
+        opacity: 0.1;
+    }
+    
+    .pool-card {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(118, 185, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .pool-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(118, 185, 0, 0.3);
+        border-color: rgba(118, 185, 0, 0.5);
+    }
+    
+    .hashrate-display {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #76b900;
+        text-shadow: 0 0 20px rgba(118, 185, 0, 0.5);
+    }
+    
+    .worker-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 50px;
+        background: rgba(16, 185, 129, 0.2);
+        border: 2px solid #10b981;
+        font-weight: 600;
+    }
+    
+    .worker-status.offline {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: #ef4444;
+        color: #ef4444;
+    }
+    
+    .stat-box {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+    
+    .stat-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #76b900;
+        margin: 10px 0;
+    }
+    
+    .coin-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-right: 15px;
+    }
+    
+    .earnings-card {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    
+    .progress-ring {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+    }
+    
+    .payout-badge {
+        padding: 10px 20px;
+        border-radius: 50px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        font-weight: 600;
+        display: inline-block;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Mining Hero -->
+    <div class="mining-hero">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-0"><i class="fas fa-hammer"></i> Professional Mining Pools</h1>
+                <p class="mb-0 mt-2">Powered by NVIDIA & Ethereum Technology</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <button class="btn btn-light btn-lg" style="border-radius: 10px;">
+                    <i class="fas fa-plus"></i> Join Pool
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mining Stats Overview -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-box">
+                <div class="text-muted mb-2">Total Hashrate</div>
+                <div class="hashrate-display">{{ total_hashrate|default:"0" }} TH/s</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-box">
+                <div class="text-muted mb-2">Active Workers</div>
+                <div class="stat-value">{{ active_workers|default:"0" }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-box">
+                <div class="text-muted mb-2">Total Earnings</div>
+                <div class="stat-value">${{ total_earnings|floatformat:2|default:"0.00" }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-box">
+                <div class="text-muted mb-2">Next Payout</div>
+                <div class="stat-value text-success">24h</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Available Mining Pools -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-3">🏊 Available Mining Pools</h3>
+        </div>
+        
+        <!-- Bitcoin Pool -->
+        <div class="col-md-6 col-lg-4">
+            <div class="pool-card">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="coin-icon" style="background: #f7931a;">₿</div>
+                    <div>
+                        <h4 class="mb-0">Bitcoin (BTC)</h4>
+                        <small class="text-muted">SHA-256 Algorithm</small>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Pool Hashrate</small>
+                        <div class="fw-bold">45.2 EH/s</div>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Miners</small>
+                        <div class="fw-bold">12,543</div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Fee</small>
+                        <div class="fw-bold">1.5%</div>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Min. Payout</small>
+                        <div class="fw-bold">0.001 BTC</div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <small class="text-muted">Est. Daily Earnings</small>
+                    <div class="fw-bold text-success">$23.50 / 100 TH/s</div>
+                </div>
+                
+                <button class="btn btn-success w-100">
+                    <i class="fas fa-play"></i> Start Mining
+                </button>
+            </div>
+        </div>
+
+        <!-- Ethereum Pool -->
+        <div class="col-md-6 col-lg-4">
+            <div class="pool-card">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="coin-icon" style="background: #627eea;">Ξ</div>
+                    <div>
+                        <h4 class="mb-0">Ethereum (ETH)</h4>
+                        <small class="text-muted">Ethash Algorithm</small>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Pool Hashrate</small>
+                        <div class="fw-bold">234 GH/s</div>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Miners</small>
+                        <div class="fw-bold">8,921</div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Fee</small>
+                        <div class="fw-bold">1.0%</div>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Min. Payout</small>
+                        <div class="fw-bold">0.01 ETH</div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <small class="text-muted">Est. Daily Earnings</small>
+                    <div class="fw-bold text-success">$18.20 / 100 MH/s</div>
+                </div>
+                
+                <button class="btn btn-success w-100">
+                    <i class="fas fa-play"></i> Start Mining
+                </button>
+            </div>
+        </div>
+
+        <!-- NVIDIA Specialized Pool -->
+        <div class="col-md-6 col-lg-4">
+            <div class="pool-card">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="coin-icon" style="background: #76b900;"><i class="fas fa-bolt"></i></div>
+                    <div>
+                        <h4 class="mb-0">NVIDIA Optimized</h4>
+                        <small class="text-muted">Multi-Coin Pool</small>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Pool Hashrate</small>
+                        <div class="fw-bold">567 GH/s</div>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Miners</small>
+                        <div class="fw-bold">15,234</div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Fee</small>
+                        <div class="fw-bold">2.0%</div>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Auto-Switch</small>
+                        <div class="fw-bold text-success">✓ Yes</div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <small class="text-muted">Est. Daily Earnings</small>
+                    <div class="fw-bold text-success">$32.40 / GPU</div>
+                </div>
+                
+                <button class="btn btn-success w-100">
+                    <i class="fas fa-play"></i> Start Mining
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Your Mining Contracts -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3 class="mb-3">🔧 Your Active Miners</h3>
+        </div>
+        
+        {% for contract in contracts %}
+        <div class="col-md-6">
+            <div class="earnings-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5>{{ contract.plan.name }}</h5>
+                        <span class="worker-status">
+                            <span class="spinner-grow spinner-grow-sm"></span>
+                            Online - Mining
+                        </span>
+                    </div>
+                    <div class="text-end">
+                        <div class="hashrate-display" style="font-size: 1.5rem;">
+                            {{ contract.plan.hashrate }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row text-center mb-3">
+                    <div class="col-4">
+                        <small class="text-muted">Earned Today</small>
+                        <div class="fw-bold text-success">$12.50</div>
+                    </div>
+                    <div class="col-4">
+                        <small class="text-muted">Total Earned</small>
+                        <div class="fw-bold">${{ contract.total_earned|floatformat:2 }}</div>
+                    </div>
+                    <div class="col-4">
+                        <small class="text-muted">Uptime</small>
+                        <div class="fw-bold">99.8%</div>
+                    </div>
+                </div>
+                
+                <div class="progress mb-2" style="height: 25px;">
+                    <div class="progress-bar bg-success" style="width: 65%;">
+                        65% to next payout
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <small class="text-muted">Next payout: 0.0045 BTC</small>
+                    <small class="payout-badge">Auto-payout enabled</small>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> No active mining contracts. Join a pool to start earning!
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Mining Statistics Chart -->
+    <div class="earnings-card mt-4">
+        <h4 class="mb-3"><i class="fas fa-chart-line"></i> Mining Performance (7 Days)</h4>
+        <canvas id="miningChart" height="80"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    // Mining Performance Chart
+    const ctx = document.getElementById('miningChart').getContext('2d');
+    const miningChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Hashrate (TH/s)',
+                data: [45.2, 46.1, 44.8, 47.3, 46.9, 48.1, 47.5],
+                borderColor: '#76b900',
+                backgroundColor: 'rgba(118, 185, 0, 0.1)',
+                yAxisID: 'y',
+                tension: 0.4
+            }, {
+                label: 'Earnings ($)',
+                data: [23.50, 24.10, 23.20, 24.80, 24.40, 25.10, 24.70],
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                yAxisID: 'y1',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { labels: { color: '#fff' } }
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { color: '#9ca3af' }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    grid: { drawOnChartArea: false },
+                    ticks: { color: '#9ca3af', callback: value => '$' + value }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#9ca3af' }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,354 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}KYC Verification - Submit Documents{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-id-card me-2"></i>KYC Verification</h2>
+            <p class="text-muted">Complete your identity verification to unlock full platform features</p>
+        </div>
+    </div>
+
+    {% if kyc_status %}
+        <!-- Existing KYC Status -->
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        {% if kyc_status.status == 'pending' %}
+                            <div class="alert alert-warning">
+                                <i class="fas fa-clock me-2"></i>
+                                <strong>Verification Pending</strong>
+                                <p class="mb-0">Your documents are under review. We'll notify you once verification is complete (usually within 24-48 hours).</p>
+                            </div>
+                        {% elif kyc_status.status == 'approved' %}
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <strong>Verified!</strong>
+                                <p class="mb-0">Your identity has been verified. You now have full access to all platform features.</p>
+                            </div>
+                        {% elif kyc_status.status == 'rejected' %}
+                            <div class="alert alert-danger">
+                                <i class="fas fa-times-circle me-2"></i>
+                                <strong>Verification Rejected</strong>
+                                <p class="mb-2">{{ kyc_status.rejection_reason }}</p>
+                                <a href="{% url 'kyc_resubmit' %}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-redo me-1"></i>Resubmit Documents
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <!-- Submitted Info -->
+                        <div class="mt-4">
+                            <h5>Submitted Information</h5>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th width="40%">Full Name:</th>
+                                    <td>{{ kyc_status.full_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Birth:</th>
+                                    <td>{{ kyc_status.date_of_birth }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Document Type:</th>
+                                    <td>{{ kyc_status.get_document_type_display }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Submitted On:</th>
+                                    <td>{{ kyc_status.submitted_at|date:"F d, Y H:i" }}</td>
+                                </tr>
+                                {% if kyc_status.reviewed_at %}
+                                <tr>
+                                    <th>Reviewed On:</th>
+                                    <td>{{ kyc_status.reviewed_at|date:"F d, Y H:i" }}</td>
+                                </tr>
+                                {% endif %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- KYC Submission Form -->
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Why verify your identity?</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Unlock higher withdrawal limits</li>
+                                <li>Access premium investment pools</li>
+                                <li>Enable P2P trading</li>
+                                <li>Comply with regulatory requirements</li>
+                            </ul>
+                        </div>
+
+                        <form method="post" enctype="multipart/form-data" id="kycForm">
+                            {% csrf_token %}
+                            
+                            <!-- Step Progress -->
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="step-label active" data-step="1"><i class="fas fa-user"></i> Personal Info</span>
+                                    <span class="step-label" data-step="2"><i class="fas fa-id-card"></i> Documents</span>
+                                    <span class="step-label" data-step="3"><i class="fas fa-camera"></i> Selfie</span>
+                                    <span class="step-label" data-step="4"><i class="fas fa-check"></i> Review</span>
+                                </div>
+                                <div class="progress" style="height: 3px;">
+                                    <div class="progress-bar" id="progressBar" style="width: 25%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Step 1: Personal Information -->
+                            <div class="form-step active" data-step="1">
+                                <h5 class="mb-3">Personal Information</h5>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Full Legal Name *</label>
+                                    <input type="text" class="form-control" name="full_name" required 
+                                           placeholder="As shown on your ID">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Date of Birth *</label>
+                                    <input type="date" class="form-control" name="date_of_birth" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Residential Address *</label>
+                                    <textarea class="form-control" name="address" rows="3" required 
+                                              placeholder="Full address including street, city, state, zip code"></textarea>
+                                </div>
+
+                                <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                                    Next <i class="fas fa-arrow-right ms-1"></i>
+                                </button>
+                            </div>
+
+                            <!-- Step 2: ID Documents -->
+                            <div class="form-step" data-step="2">
+                                <h5 class="mb-3">Identity Document</h5>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Document Type *</label>
+                                    <select class="form-select" name="document_type" required>
+                                        <option value="">Select document type...</option>
+                                        <option value="passport">Passport</option>
+                                        <option value="id_card">National ID Card</option>
+                                        <option value="drivers_license">Driver's License</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Front of Document *</label>
+                                    <input type="file" class="form-control" name="document_front" required accept="image/*">
+                                    <small class="text-muted">Clear photo of the front side. Max 5MB.</small>
+                                    <div class="mt-2" id="frontPreview"></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Back of Document</label>
+                                    <input type="file" class="form-control" name="document_back" accept="image/*">
+                                    <small class="text-muted">Required for ID cards and driver's licenses. Max 5MB.</small>
+                                    <div class="mt-2" id="backPreview"></div>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-secondary" onclick="previousStep(1)">
+                                        <i class="fas fa-arrow-left me-1"></i> Back
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(3)">
+                                        Next <i class="fas fa-arrow-right ms-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Selfie -->
+                            <div class="form-step" data-step="3">
+                                <h5 class="mb-3">Selfie Verification</h5>
+                                
+                                <div class="alert alert-info">
+                                    <i class="fas fa-camera me-2"></i>
+                                    <strong>Take a clear selfie holding your ID</strong>
+                                    <ul class="mb-0 mt-2">
+                                        <li>Face must be clearly visible</li>
+                                        <li>Hold your ID next to your face</li>
+                                        <li>Make sure ID details are readable</li>
+                                        <li>Good lighting, no sunglasses or hats</li>
+                                    </ul>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Selfie with ID *</label>
+                                    <input type="file" class="form-control" name="selfie" required accept="image/*" capture="user">
+                                    <small class="text-muted">Take or upload a selfie holding your ID. Max 5MB.</small>
+                                    <div class="mt-2" id="selfiePreview"></div>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-secondary" onclick="previousStep(2)">
+                                        <i class="fas fa-arrow-left me-1"></i> Back
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(4)">
+                                        Review <i class="fas fa-arrow-right ms-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Review & Submit -->
+                            <div class="form-step" data-step="4">
+                                <h5 class="mb-3">Review Your Information</h5>
+                                
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    Please review all information carefully. Incorrect or fraudulent information may result in account suspension.
+                                </div>
+
+                                <div id="reviewSummary" class="mb-3">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                    <label class="form-check-label" for="agreeTerms">
+                                        I confirm that all information provided is accurate and that the documents belong to me.
+                                    </label>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-secondary" onclick="previousStep(3)">
+                                        <i class="fas fa-arrow-left me-1"></i> Back
+                                    </button>
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fas fa-check-circle me-1"></i> Submit for Verification
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+.step-label {
+    color: #6c757d;
+    font-size: 14px;
+    font-weight: 500;
+}
+.step-label.active {
+    color: #0d6efd;
+    font-weight: 600;
+}
+.form-step {
+    display: none;
+}
+.form-step.active {
+    display: block;
+}
+.img-preview {
+    max-width: 200px;
+    max-height: 200px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 4px;
+}
+</style>
+
+<script>
+// Form step navigation
+function nextStep(step) {
+    // Validate current step
+    const currentStep = document.querySelector('.form-step.active');
+    const inputs = currentStep.querySelectorAll('input[required], select[required], textarea[required]');
+    let valid = true;
+    
+    inputs.forEach(input => {
+        if (!input.value) {
+            valid = false;
+            input.classList.add('is-invalid');
+        } else {
+            input.classList.remove('is-invalid');
+        }
+    });
+    
+    if (!valid) {
+        alert('Please fill in all required fields');
+        return;
+    }
+    
+    // Move to next step
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+    
+    document.querySelectorAll('.step-label').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.step-label[data-step="${step}"]`).classList.add('active');
+    
+    // Update progress bar
+    const progress = (step / 4) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+    
+    // If review step, populate summary
+    if (step === 4) {
+        populateReview();
+    }
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
+function previousStep(step) {
+    nextStep(step);
+}
+
+// Image preview
+document.addEventListener('DOMContentLoaded', function() {
+    ['document_front', 'document_back', 'selfie'].forEach(name => {
+        const input = document.querySelector(`input[name="${name}"]`);
+        if (input) {
+            input.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const previewId = name + 'Preview';
+                        const preview = document.getElementById(previewId.replace('document_', '').replace('_', ''));
+                        preview.innerHTML = `<img src="${e.target.result}" class="img-preview" alt="Preview">`;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    });
+});
+
+function populateReview() {
+    const fullName = document.querySelector('[name="full_name"]').value;
+    const dob = document.querySelector('[name="date_of_birth"]').value;
+    const address = document.querySelector('[name="address"]').value;
+    const docType = document.querySelector('[name="document_type"]').selectedOptions[0].text;
+    
+    const summary = `
+        <div class="card bg-light">
+            <div class="card-body">
+                <h6>Personal Information</h6>
+                <p class="mb-1"><strong>Name:</strong> ${fullName}</p>
+                <p class="mb-1"><strong>Date of Birth:</strong> ${dob}</p>
+                <p class="mb-1"><strong>Address:</strong> ${address}</p>
+                <p class="mb-0"><strong>Document Type:</strong> ${docType}</p>
+            </div>
+        </div>
+    `;
+    document.getElementById('reviewSummary').innerHTML = summary;
+}
+</script>
+{% endblock %}
