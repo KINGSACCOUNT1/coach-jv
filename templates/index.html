@@ -168,7 +168,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(ellipse at top, rgba(102, 126, 234, 0.15), transparent 70%);
+            background: radial-gradient(ellipse at top, rgba(255, 215, 0, 0.1), transparent 70%);
             pointer-events: none;
         }
         
@@ -177,10 +177,11 @@
             font-weight: 900;
             line-height: 1.2;
             margin-bottom: 30px;
+            animation: fadeInUp 1s ease;
         }
         
         .hero h1 .gradient-text {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -189,6 +190,22 @@
             font-size: 1.3rem;
             color: rgba(255,255,255,0.8);
             margin-bottom: 40px;
+            animation: fadeInUp 1.2s ease;
+        }
+        
+        .hero .d-flex {
+            animation: fadeInUp 1.4s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* Live Price Cards */
@@ -457,6 +474,298 @@
                 right: 5%;
                 bottom: 20px;
             }
+        }
+        
+        /* HOW IT WORKS SECTION */
+        .how-works-section {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            position: relative;
+        }
+        
+        .journey-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 60px auto;
+            max-width: 1200px;
+            position: relative;
+            padding: 40px 20px;
+        }
+        
+        .journey-step {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.25);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .journey-step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+            border-color: rgba(255, 215, 0, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            border: 4px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .step-icon {
+            font-size: 2.5rem;
+            margin: 15px 0;
+            color: var(--accent);
+        }
+        
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 15px 0;
+        }
+        
+        .step-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* PAYMENT PARTNERS SECTION */
+        .partners-section {
+            padding: 80px 20px;
+            background: var(--darker-bg);
+        }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .partner-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            cursor: pointer;
+        }
+        
+        .partner-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.3);
+            border-color: rgba(255, 215, 0, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .partner-logo i {
+            font-size: 2.5rem;
+            color: var(--accent);
+        }
+        
+        /* VIDEO SECTION */
+        .video-section {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            position: relative;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .video-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(255, 215, 0, 0.3);
+            border-color: var(--accent);
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            position: relative;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 200px;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .video-card:hover .video-overlay {
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.5) 100%);
+        }
+        
+        .play-button {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+            transition: all 0.3s;
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
+        }
+        
+        .video-card:hover .play-button {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(255, 215, 0, 0.6);
+        }
+        
+        .video-info {
+            padding: 20px;
+        }
+        
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .video-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* ENHANCED TESTIMONIALS */
+        .testimonials-section {
+            padding: 100px 20px;
+            background: var(--dark-bg);
+        }
+        
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s;
+            height: 100%;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(255, 215, 0, 0.3);
+            border-color: var(--accent);
+        }
+        
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            object-fit: cover;
+        }
+        
+        .testimonial-info h4 {
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .testimonial-location {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        .testimonial-rating {
+            color: var(--accent);
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
+        
+        .testimonial-text {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .testimonial-investment {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -818,6 +1127,156 @@
                         <a href="/register/" style="display: block; width: 100%; padding: 15px; background: linear-gradient(135deg, var(--danger), #ff6b81); border: none; border-radius: 10px; color: #fff; font-weight: 600; text-decoration: none; text-align: center;">
                             Invest Now
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works Section -->
+    <section class="how-works-section" id="how-it-works">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="display-4 fw-bold" style="color: #fff;">How It Works</h2>
+                <p class="lead" style="color: rgba(255,255,255,0.8);">Start earning with CoachJVTech in 5 simple steps</p>
+            </div>
+            
+            <div class="journey-steps">
+                <div class="journey-step" data-aos="fade-up" data-aos-delay="0">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">📝</div>
+                    <h3 class="step-title">Sign Up</h3>
+                    <p class="step-description">Create your account in just 2 minutes with basic information. Quick and secure registration process.</p>
+                </div>
+                
+                <div class="journey-step" data-aos="fade-up" data-aos-delay="100">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">✓</div>
+                    <h3 class="step-title">Verify Identity</h3>
+                    <p class="step-description">Complete our KYC process with document verification. Usually completed within 24 hours.</p>
+                </div>
+                
+                <div class="journey-step" data-aos="fade-up" data-aos-delay="200">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">🎯</div>
+                    <h3 class="step-title">Choose Pool</h3>
+                    <p class="step-description">Select from Conservative, Balanced, or Aggressive pools based on your risk appetite.</p>
+                </div>
+                
+                <div class="journey-step" data-aos="fade-up" data-aos-delay="300">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">💰</div>
+                    <h3 class="step-title">Invest Smart</h3>
+                    <p class="step-description">Start with just $500 or invest unlimited amounts. Flexible investment options for everyone.</p>
+                </div>
+                
+                <div class="journey-step" data-aos="fade-up" data-aos-delay="400">
+                    <div class="step-number">5</div>
+                    <div class="step-icon">📈</div>
+                    <h3 class="step-title">Earn & Withdraw</h3>
+                    <p class="step-description">Monitor returns and withdraw after lock period. Track performance 24/7 from your dashboard.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Payment Partners Section -->
+    <section class="partners-section">
+        <div class="container">
+            <div class="text-center mb-4" data-aos="fade-up">
+                <h2 class="display-5 fw-bold" style="color: var(--accent);">Trusted Payment Partners</h2>
+                <p class="lead" style="color: rgba(255,255,255,0.7);">Secure crypto payment integrations</p>
+            </div>
+            
+            <div class="partners-grid">
+                <div class="partner-logo" data-aos="fade-up" data-aos-delay="0" title="Binance">
+                    <i class="fab fa-btc"></i>
+                </div>
+                <div class="partner-logo" data-aos="fade-up" data-aos-delay="100" title="Coinbase">
+                    <i class="fab fa-ethereum"></i>
+                </div>
+                <div class="partner-logo" data-aos="fade-up" data-aos-delay="200" title="Bybit">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="partner-logo" data-aos="fade-up" data-aos-delay="300" title="KuCoin">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="partner-logo" data-aos="fade-up" data-aos-delay="400" title="MetaMask">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="partner-logo" data-aos="fade-up" data-aos-delay="500" title="Trust Wallet">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="partner-logo" data-aos="fade-up" data-aos-delay="600" title="Ledger">
+                    <i class="fas fa-key"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Video Section -->
+    <section class="video-section">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="display-4 fw-bold" style="color: #fff;">Meet Coach JV</h2>
+                <p class="lead" style="color: rgba(255,255,255,0.8);">Learn about our investment strategies and success stories</p>
+            </div>
+            
+            <div class="video-grid">
+                <div class="video-card" data-aos="fade-up" data-aos-delay="0">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500" alt="Introduction to CoachJVTech" class="video-thumbnail" />
+                        <div class="video-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play" style="margin-left: 4px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Introduction to CoachJVTech</h3>
+                        <p class="video-description">Discover how our platform helps investors achieve consistent returns through professional crypto trading.</p>
+                        <div class="video-meta">
+                            <span><i class="fas fa-clock me-1"></i> 5:32</span>
+                            <span><i class="fas fa-eye me-1"></i> 12.5K views</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-card" data-aos="fade-up" data-aos-delay="100">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=500" alt="How Our Pools Work" class="video-thumbnail" />
+                        <div class="video-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play" style="margin-left: 4px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">How Our Investment Pools Work</h3>
+                        <p class="video-description">Learn about our Conservative, Balanced, and Aggressive investment strategies and choose what fits you.</p>
+                        <div class="video-meta">
+                            <span><i class="fas fa-clock me-1"></i> 8:15</span>
+                            <span><i class="fas fa-eye me-1"></i> 24.8K views</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-card" data-aos="fade-up" data-aos-delay="200">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=500" alt="Success Stories" class="video-thumbnail" />
+                        <div class="video-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play" style="margin-left: 4px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Investor Success Stories</h3>
+                        <p class="video-description">Real testimonials from investors who have achieved financial freedom with CoachJVTech.</p>
+                        <div class="video-meta">
+                            <span><i class="fas fa-clock me-1"></i> 12:48</span>
+                            <span><i class="fas fa-eye me-1"></i> 18.2K views</span>
+                        </div>
                     </div>
                 </div>
             </div>
