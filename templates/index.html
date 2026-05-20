@@ -998,9 +998,15 @@
         </div>
     </nav>
     
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
+    <!-- Hero Section with Premium Background -->
+    <section class="hero" style="position: relative; overflow: hidden;">
+        <!-- Background Image with Overlay -->
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
+            <img src="{% static 'images/backgrounds/hero-bg.jpg' %}" alt="" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.15;" />
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(10, 31, 68, 0.95), rgba(5, 11, 26, 0.9));"></div>
+        </div>
+        
+        <div class="container" style="position: relative; z-index: 1;">
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div style="margin-bottom: 20px;">
@@ -1394,69 +1400,104 @@
             </div>
             <div class="row g-4">
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-users-cog"></i>
+                    <div class="feature-card" style="position: relative; overflow: hidden;">
+                        <!-- Feature Background Image -->
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
+                            <img src="{% static 'images/features/security.jpg' %}" alt="" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.08;" />
                         </div>
-                        <h3 class="feature-title">Expert Management</h3>
-                        <p class="feature-desc">
-                            Professional traders with years of experience manage your investments 24/7. Our team has delivered consistent returns since 2020.
-                        </p>
+                        <div style="position: relative; z-index: 1;">
+                            <div class="feature-icon">
+                                <i class="fas fa-users-cog"></i>
+                            </div>
+                            <h3 class="feature-title">Expert Management</h3>
+                            <p class="feature-desc">
+                                Professional traders with years of experience manage your investments 24/7. Our team has delivered consistent returns since 2020.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
+                    <div class="feature-card" style="position: relative; overflow: hidden;">
+                        <!-- Feature Background Image -->
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
+                            <img src="{% static 'images/features/trading.jpg' %}" alt="" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.08;" />
                         </div>
-                        <h3 class="feature-title">Proven Returns</h3>
-                        <p class="feature-desc">
-                            Consistent profit distribution based on successful trading strategies. Track record of 8-25% monthly returns across all pools.
-                        </p>
+                        <div style="position: relative; z-index: 1;">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3 class="feature-title">Proven Returns</h3>
+                            <p class="feature-desc">
+                                Consistent profit distribution based on successful trading strategies. Track record of 8-25% monthly returns across all pools.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
+                    <div class="feature-card" style="position: relative; overflow: hidden;">
+                        <!-- Feature Background Image -->
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
+                            <img src="{% static 'images/features/security.jpg' %}" alt="" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.08;" />
                         </div>
-                        <h3 class="feature-title">Secure & Transparent</h3>
-                        <p class="feature-desc">
-                            Bank-level security with full transparency on all trades and profits. 95% cold storage, 2FA authentication, SSL encryption.
-                        </p>
+                        <div style="position: relative; z-index: 1;">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="feature-title">Secure & Transparent</h3>
+                            <p class="feature-desc">
+                                Bank-level security with full transparency on all trades and profits. 95% cold storage, 2FA authentication, SSL encryption.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-layer-group"></i>
+                    <div class="feature-card" style="position: relative; overflow: hidden;">
+                        <!-- Feature Background Image -->
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
+                            <img src="{% static 'images/features/portfolio.jpg' %}" alt="" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.08;" />
                         </div>
-                        <h3 class="feature-title">Investment Pools</h3>
-                        <p class="feature-desc">
-                            Buy shares in diversified trading pools with different risk levels. Choose Conservative, Balanced, or Aggressive strategies.
-                        </p>
+                        <div style="position: relative; z-index: 1;">
+                            <div class="feature-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <h3 class="feature-title">Investment Pools</h3>
+                            <p class="feature-desc">
+                                Buy shares in diversified trading pools with different risk levels. Choose Conservative, Balanced, or Aggressive strategies.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-wallet"></i>
+                    <div class="feature-card" style="position: relative; overflow: hidden;">
+                        <!-- Feature Background Image -->
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
+                            <img src="{% static 'images/crypto-coins/bitcoin.jpg' %}" alt="" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.08;" />
                         </div>
+                        <div style="position: relative; z-index: 1;">
+                            <div class="feature-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
                         <h3 class="feature-title">125+ Cryptocurrencies</h3>
                         <p class="feature-desc">
                             Trade BTC, ETH, USDT, and 120+ other major cryptocurrencies. Access to all top exchanges and liquidity pools.
-                        </p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-mobile-alt"></i>
+                    <div class="feature-card" style="position: relative; overflow: hidden;">
+                        <!-- Feature Background Image -->
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
+                            <img src="{% static 'images/features/mobile.jpg' %}" alt="" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.08;" />
                         </div>
-                        <h3 class="feature-title">Mobile Trading</h3>
-                        <p class="feature-desc">
-                            Access your portfolio and track performance from anywhere. Real-time notifications and instant withdrawals 24/7.
-                        </p>
+                        <div style="position: relative; z-index: 1;">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3 class="feature-title">Mobile Trading</h3>
+                            <p class="feature-desc">
+                                Access your portfolio and track performance from anywhere. Real-time notifications and instant withdrawals 24/7.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1943,7 +1984,7 @@
                             "I've been investing with CoachJVTech for 6 months and my portfolio has grown by 47%. The professional management gives me peace of mind."
                         </p>
                         <div class="d-flex align-items-center mt-4">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; border: 2px solid var(--primary);" alt="Michael Johnson" />
+                            <img src="{% static 'images/testimonials/person1.jpg' %}" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; border: 2px solid var(--primary); object-fit: cover;" alt="Michael Johnson" />
                             <div>
                                 <div style="font-weight: 700;">Michael Johnson</div>
                                 <div style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Investor since Jan 2026</div>
@@ -1960,7 +2001,7 @@
                             "Finally, a platform I can trust! Transparent fees, regular profit distributions, and excellent customer support. Highly recommended!"
                         </p>
                         <div class="d-flex align-items-center mt-4">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; border: 2px solid var(--accent);" alt="Sarah Chen" />
+                            <img src="{% static 'images/testimonials/person2.jpg' %}" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; border: 2px solid var(--accent); object-fit: cover;" alt="Sarah Chen" />
                             <div>
                                 <div style="font-weight: 700;">Sarah Chen</div>
                                 <div style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Investor since Dec 2025</div>
@@ -1977,7 +2018,7 @@
                             "The best crypto investment platform I've used. My conservative pool has consistently delivered 12-15% monthly returns. Amazing!"
                         </p>
                         <div class="d-flex align-items-center mt-4">
-                            <img src="https://randomuser.me/api/portraits/men/22.jpg" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; border: 2px solid var(--success);" alt="David Park" />
+                            <img src="{% static 'images/testimonials/person3.jpg' %}" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; border: 2px solid var(--success); object-fit: cover;" alt="David Park" />
                             <div>
                                 <div style="font-weight: 700;">David Park</div>
                                 <div style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Investor since Mar 2026</div>
