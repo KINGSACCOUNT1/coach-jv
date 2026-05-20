@@ -334,6 +334,18 @@
             100% { opacity: 0; transform: translateY(-20px); }
         }
         
+        /* Floating Crypto Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+        
+        /* XRP Pulse Animation */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
         /* Hero Section */
         .hero {
             padding: 100px 0;
@@ -1104,6 +1116,135 @@
                         <div class="stat-label">24/7 Trading Support</div>
                         <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 10px;">Always online</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- XRP Showcase Section - Coach JV's Specialty -->
+    <section id="xrp-focus" style="padding: 100px 0; background: linear-gradient(180deg, rgba(10, 31, 68, 0.5) 0%, rgba(0, 0, 0, 0.3) 100%); position: relative; overflow: hidden;">
+        <!-- Animated Background -->
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; z-index: 0;">
+            <div class="floating-crypto" style="position: absolute; font-size: 8rem; top: 10%; left: 5%; animation: float 6s ease-in-out infinite;">💎</div>
+            <div class="floating-crypto" style="position: absolute; font-size: 6rem; top: 60%; right: 10%; animation: float 8s ease-in-out infinite 1s;">🚀</div>
+            <div class="floating-crypto" style="position: absolute; font-size: 7rem; bottom: 10%; left: 15%; animation: float 7s ease-in-out infinite 2s;">⚡</div>
+        </div>
+        
+        <div class="container" style="position: relative; z-index: 1;">
+            <div class="text-center mb-5" data-aos="zoom-in">
+                <div style="display: inline-block; background: rgba(0, 170, 255, 0.1); padding: 10px 25px; border-radius: 30px; margin-bottom: 20px; border: 2px solid rgba(0, 170, 255, 0.3);">
+                    <span style="color: #00AAFF; font-weight: 700; font-size: 1rem;">
+                        <i class="fas fa-star me-2"></i>COACH JV'S SPECIALTY
+                    </span>
+                </div>
+                <h2 class="display-3 fw-bold" style="color: #fff; margin-bottom: 20px;">
+                    <span style="background: linear-gradient(135deg, #00AAFF, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">XRP</span> - The Future of Payments
+                </h2>
+                <p class="lead" style="color: rgba(255,255,255,0.8); font-size: 1.3rem; max-width: 800px; margin: 0 auto;">
+                    Coach JV's #1 cryptocurrency pick. Learn why XRP is positioned to revolutionize global finance and how you can benefit.
+                </p>
+            </div>
+            
+            <div class="row g-4 align-items-center">
+                <!-- XRP Live Data -->
+                <div class="col-lg-5" data-aos="fade-right">
+                    <div style="background: rgba(0, 170, 255, 0.05); border: 2px solid rgba(0, 170, 255, 0.3); border-radius: 24px; padding: 40px; backdrop-filter: blur(15px); box-shadow: 0 20px 60px rgba(0, 170, 255, 0.3);">
+                        <!-- XRP Logo -->
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <img src="https://cryptologos.cc/logos/xrp-xrp-logo.png" alt="XRP Logo" style="width: 120px; height: 120px; animation: pulse 2s ease-in-out infinite;" />
+                        </div>
+                        
+                        <!-- Live Price -->
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <div style="color: rgba(255,255,255,0.6); font-size: 1rem; margin-bottom: 10px;">XRP/USD LIVE PRICE</div>
+                            <div id="xrpPrice" style="font-size: 3.5rem; font-weight: 900; color: #00AAFF; font-family: 'Courier New', monospace;">$0.00</div>
+                            <div id="xrpChange" style="font-size: 1.2rem; font-weight: 600; margin-top: 10px;">
+                                <span class="ticker-change up">▲ 0.00%</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Stats -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                            <div style="text-align: center; padding: 20px; background: rgba(0, 170, 255, 0.1); border-radius: 12px;">
+                                <div style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 5px;">24H Volume</div>
+                                <div style="color: #00AAFF; font-size: 1.3rem; font-weight: 700;">$2.5B+</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px; background: rgba(255, 215, 0, 0.1); border-radius: 12px;">
+                                <div style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 5px;">Market Cap</div>
+                                <div style="color: var(--accent); font-size: 1.3rem; font-weight: 700;">$150B+</div>
+                            </div>
+                        </div>
+                        
+                        <!-- CTA Button -->
+                        <a href="/register/" style="display: block; background: linear-gradient(135deg, #00AAFF, #0088DD); color: #fff; text-align: center; padding: 18px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 1.1rem; transition: all 0.3s; box-shadow: 0 8px 20px rgba(0, 170, 255, 0.4);">
+                            <i class="fas fa-rocket me-2"></i>Start Investing in XRP
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- XRP Benefits -->
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div style="display: grid; gap: 20px;">
+                        <!-- Benefit 1 -->
+                        <div style="display: flex; gap: 20px; background: rgba(255,255,255,0.03); padding: 25px; border-radius: 16px; border: 1px solid rgba(0, 170, 255, 0.2); backdrop-filter: blur(10px); transition: all 0.3s;" onmouseover="this.style.transform='translateX(10px)'; this.style.borderColor='#00AAFF'" onmouseout="this.style.transform='translateX(0)'; this.style.borderColor='rgba(0, 170, 255, 0.2)'">
+                            <div style="flex-shrink: 0; width: 60px; height: 60px; background: rgba(0, 170, 255, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                                ⚡
+                            </div>
+                            <div>
+                                <h4 style="color: #00AAFF; font-size: 1.3rem; margin-bottom: 10px; font-weight: 700;">Lightning Fast Transactions</h4>
+                                <p style="color: rgba(255,255,255,0.7); margin: 0; line-height: 1.6;">XRP settles transactions in 3-5 seconds, compared to Bitcoin's 10+ minutes. Perfect for real-world payments.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Benefit 2 -->
+                        <div style="display: flex; gap: 20px; background: rgba(255,255,255,0.03); padding: 25px; border-radius: 16px; border: 1px solid rgba(255, 215, 0, 0.2); backdrop-filter: blur(10px); transition: all 0.3s;" onmouseover="this.style.transform='translateX(10px)'; this.style.borderColor='#FFD700'" onmouseout="this.style.transform='translateX(0)'; this.style.borderColor='rgba(255, 215, 0, 0.2)'">
+                            <div style="flex-shrink: 0; width: 60px; height: 60px; background: rgba(255, 215, 0, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                                💰
+                            </div>
+                            <div>
+                                <h4 style="color: var(--accent); font-size: 1.3rem; margin-bottom: 10px; font-weight: 700;">Extremely Low Fees</h4>
+                                <p style="color: rgba(255,255,255,0.7); margin: 0; line-height: 1.6;">Transaction costs as low as $0.0002. Send millions of dollars for pennies - ideal for institutional adoption.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Benefit 3 -->
+                        <div style="display: flex; gap: 20px; background: rgba(255,255,255,0.03); padding: 25px; border-radius: 16px; border: 1px solid rgba(0, 170, 255, 0.2); backdrop-filter: blur(10px); transition: all 0.3s;" onmouseover="this.style.transform='translateX(10px)'; this.style.borderColor='#00AAFF'" onmouseout="this.style.transform='translateX(0)'; this.style.borderColor='rgba(0, 170, 255, 0.2)'">
+                            <div style="flex-shrink: 0; width: 60px; height: 60px; background: rgba(0, 170, 255, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                                🏦
+                            </div>
+                            <div>
+                                <h4 style="color: #00AAFF; font-size: 1.3rem; margin-bottom: 10px; font-weight: 700;">Bank & Institution Partnerships</h4>
+                                <p style="color: rgba(255,255,255,0.7); margin: 0; line-height: 1.6;">Ripple partners with 300+ financial institutions globally. XRP is built for the future of finance.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Benefit 4 -->
+                        <div style="display: flex; gap: 20px; background: rgba(255,255,255,0.03); padding: 25px; border-radius: 16px; border: 1px solid rgba(255, 215, 0, 0.2); backdrop-filter: blur(10px); transition: all 0.3s;" onmouseover="this.style.transform='translateX(10px)'; this.style.borderColor='#FFD700'" onmouseout="this.style.transform='translateX(0)'; this.style.borderColor='rgba(255, 215, 0, 0.2)'">
+                            <div style="flex-shrink: 0; width: 60px; height: 60px; background: rgba(255, 215, 0, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                                🌍
+                            </div>
+                            <div>
+                                <h4 style="color: var(--accent); font-size: 1.3rem; margin-bottom: 10px; font-weight: 700;">Global Scalability</h4>
+                                <p style="color: rgba(255,255,255,0.7); margin: 0; line-height: 1.6;">Handles 1,500 transactions per second. Scalable to meet global demand without compromising speed.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Coach JV's XRP Strategy -->
+            <div class="mt-5 text-center" data-aos="fade-up" data-aos-delay="200">
+                <div style="background: linear-gradient(135deg, rgba(0, 170, 255, 0.1), rgba(255, 215, 0, 0.1)); padding: 40px; border-radius: 20px; border: 2px solid rgba(0, 170, 255, 0.3); backdrop-filter: blur(15px); max-width: 900px; margin: 0 auto;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px;">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Coach JV" style="width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--accent);" />
+                        <div style="text-align: left;">
+                            <div style="color: var(--accent); font-weight: 700; font-size: 1.1rem;">Coach JV says:</div>
+                            <div style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Founder, 3T Warrior Academy</div>
+                        </div>
+                    </div>
+                    <p style="color: #fff; font-size: 1.2rem; line-height: 1.8; margin: 0; font-style: italic;">
+                        "XRP is my #1 cryptocurrency for long-term wealth building. With institutional backing, real-world utility, and upcoming regulatory clarity, XRP is positioned to transform global payments. This is the crypto that will change lives."
+                    </p>
                 </div>
             </div>
         </div>
@@ -2387,6 +2528,29 @@
         
         // Rotate text every 3 seconds
         setInterval(rotateText, 3000);
+        
+        // Update XRP Live Price
+        function updateXRPPrice() {
+            const xrpData = cryptoData.find(crypto => crypto.symbol === 'XRP');
+            if (xrpData) {
+                const priceEl = document.getElementById('xrpPrice');
+                const changeEl = document.getElementById('xrpChange');
+                
+                if (priceEl) {
+                    priceEl.textContent = '$' + xrpData.price.toFixed(4);
+                }
+                
+                if (changeEl) {
+                    const changeClass = xrpData.change >= 0 ? 'up' : 'down';
+                    const changeIcon = xrpData.change >= 0 ? '▲' : '▼';
+                    changeEl.innerHTML = `<span class="ticker-change ${changeClass}">${changeIcon} ${Math.abs(xrpData.change).toFixed(2)}%</span>`;
+                }
+            }
+        }
+        
+        // Update XRP price initially and every 3 seconds
+        updateXRPPrice();
+        setInterval(updateXRPPrice, 3000);
         
         // Show first pop-up after 3 seconds, then every 12 seconds
         setTimeout(() => {
