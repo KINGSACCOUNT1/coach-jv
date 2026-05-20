@@ -967,10 +967,76 @@
     </style>
 </head>
 <body>
-    <!-- Top Scrolling Ticker -->
-    <div class="ticker-wrapper-top">
-        <div class="ticker-content" id="topTicker">
-            <!-- Duplicated for seamless loop -->
+    
+    <!-- Clean Crypto Showcase with Real Logos -->
+    <div style="background: linear-gradient(90deg, #0A1F44 0%, #050B1A 100%); padding: 20px 0; border-bottom: 1px solid rgba(255, 215, 0, 0.1);">
+        <div class="container">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 30px;">
+                <!-- Popular Cryptocurrencies Label -->
+                <div style="color: rgba(255,255,255,0.6); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;">POPULAR CRYPTOCURRENCIES</div>
+                
+                <!-- Crypto Cards with Logos -->
+                <div style="display: flex; gap: 25px; flex-wrap: wrap; align-items: center;">
+                    <!-- Bitcoin -->
+                    <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 12px; border: 1px solid rgba(255, 215, 0, 0.15); transition: all 0.3s;" onmouseover="this.style.background='rgba(255,215,0,0.1)'; this.style.borderColor='var(--accent)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255, 215, 0, 0.15)'">
+                        <img src="{% static 'images/crypto-logos/btc.png' %}" alt="Bitcoin" style="width: 28px; height: 28px;" />
+                        <div>
+                            <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">BTC</div>
+                            <div style="color: #10b981; font-size: 0.75rem;">+2.34%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ethereum -->
+                    <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 12px; border: 1px solid rgba(255, 215, 0, 0.15); transition: all 0.3s;" onmouseover="this.style.background='rgba(255,215,0,0.1)'; this.style.borderColor='var(--accent)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255, 215, 0, 0.15)'">
+                        <img src="{% static 'images/crypto-logos/eth.png' %}" alt="Ethereum" style="width: 28px; height: 28px;" />
+                        <div>
+                            <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">ETH</div>
+                            <div style="color: #10b981; font-size: 0.75rem;">+3.12%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- XRP -->
+                    <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 12px; border: 1px solid rgba(255, 215, 0, 0.15); transition: all 0.3s;" onmouseover="this.style.background='rgba(255,215,0,0.1)'; this.style.borderColor='var(--accent)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255, 215, 0, 0.15)'">
+                        <img src="{% static 'images/crypto-logos/xrp.png' %}" alt="XRP" style="width: 28px; height: 28px;" />
+                        <div>
+                            <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">XRP</div>
+                            <div style="color: #ef4444; font-size: 0.75rem;">-1.23%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Solana -->
+                    <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 12px; border: 1px solid rgba(255, 215, 0, 0.15); transition: all 0.3s;" onmouseover="this.style.background='rgba(255,215,0,0.1)'; this.style.borderColor='var(--accent)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255, 215, 0, 0.15)'">
+                        <img src="{% static 'images/crypto-logos/sol.png' %}" alt="Solana" style="width: 28px; height: 28px;" />
+                        <div>
+                            <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">SOL</div>
+                            <div style="color: #10b981; font-size: 0.75rem;">+5.67%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cardano -->
+                    <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 12px; border: 1px solid rgba(255, 215, 0, 0.15); transition: all 0.3s;" onmouseover="this.style.background='rgba(255,215,0,0.1)'; this.style.borderColor='var(--accent)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255, 215, 0, 0.15)'">
+                        <img src="{% static 'images/crypto-logos/ada.png' %}" alt="Cardano" style="width: 28px; height: 28px;" />
+                        <div>
+                            <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">ADA</div>
+                            <div style="color: #10b981; font-size: 0.75rem;">+2.01%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dogecoin -->
+                    <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 12px; border: 1px solid rgba(255, 215, 0, 0.15); transition: all 0.3s;" onmouseover="this.style.background='rgba(255,215,0,0.1)'; this.style.borderColor='var(--accent)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255, 215, 0, 0.15)'">
+                        <img src="{% static 'images/crypto-logos/doge.png' %}" alt="Dogecoin" style="width: 28px; height: 28px;" />
+                        <div>
+                            <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">DOGE</div>
+                            <div style="color: #10b981; font-size: 0.75rem;">+4.32%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- View All Link -->
+                <a href="#markets" style="color: var(--accent); font-weight: 600; font-size: 0.9rem; text-decoration: none; white-space: nowrap;">
+                    View All 125+ <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
         </div>
     </div>
     
@@ -1767,13 +1833,6 @@
         </div>
     </section>
     
-    <!-- Middle Crypto Ticker 1 (Reverse Direction) -->
-    <div class="ticker-wrapper-middle">
-        <div class="ticker-content" id="middleTicker">
-            <!-- Will be populated by JavaScript -->
-        </div>
-    </div>
-    
     <!-- Video Section -->
     <section class="video-section">
         <div class="container">
@@ -2029,13 +2088,6 @@
             </div>
         </div>
     </section>
-    
-    <!-- Footer Crypto Ticker (Slower) -->
-    <div class="ticker-wrapper-footer">
-        <div class="ticker-content" id="footerTicker">
-            <!-- Populated by JavaScript -->
-        </div>
-    </div>
     
     <!-- Footer -->
     <footer class="footer" style="background: #0a0e27; border-top: 1px solid var(--border-color); padding: 80px 0 30px;">
