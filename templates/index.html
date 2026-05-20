@@ -1033,6 +1033,135 @@
         </div>
     </section>
     
+    <!-- Live Market Charts Section -->
+    <section id="markets" style="padding: 80px 0; background: var(--dark-bg);">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="display-4 fw-bold">Live Crypto Markets</h2>
+                <p class="lead text-muted">Real-time prices and charts for top cryptocurrencies</p>
+            </div>
+            
+            <!-- TradingView Widgets -->
+            <div class="row g-4">
+                <!-- Bitcoin Chart -->
+                <div class="col-lg-6 col-md-12" data-aos="fade-up" data-aos-delay="0">
+                    <div style="background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); backdrop-filter: blur(10px);">
+                        <h3 style="color: var(--accent); font-size: 1.5rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fab fa-bitcoin" style="font-size: 1.8rem;"></i> Bitcoin (BTC/USD)
+                        </h3>
+                        <!-- TradingView Widget BEGIN -->
+                        <div class="tradingview-widget-container">
+                            <div id="tradingview_btc"></div>
+                            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                            <script type="text/javascript">
+                                new TradingView.widget({
+                                    "autosize": true,
+                                    "symbol": "BINANCE:BTCUSDT",
+                                    "interval": "D",
+                                    "timezone": "Etc/UTC",
+                                    "theme": "dark",
+                                    "style": "1",
+                                    "locale": "en",
+                                    "toolbar_bg": "#0A1F44",
+                                    "enable_publishing": false,
+                                    "hide_top_toolbar": false,
+                                    "hide_legend": false,
+                                    "save_image": false,
+                                    "container_id": "tradingview_btc",
+                                    "height": "400"
+                                });
+                            </script>
+                        </div>
+                        <!-- TradingView Widget END -->
+                    </div>
+                </div>
+                
+                <!-- Ethereum Chart -->
+                <div class="col-lg-6 col-md-12" data-aos="fade-up" data-aos-delay="100">
+                    <div style="background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); backdrop-filter: blur(10px);">
+                        <h3 style="color: var(--accent); font-size: 1.5rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fab fa-ethereum" style="font-size: 1.8rem;"></i> Ethereum (ETH/USD)
+                        </h3>
+                        <!-- TradingView Widget BEGIN -->
+                        <div class="tradingview-widget-container">
+                            <div id="tradingview_eth"></div>
+                            <script type="text/javascript">
+                                new TradingView.widget({
+                                    "autosize": true,
+                                    "symbol": "BINANCE:ETHUSDT",
+                                    "interval": "D",
+                                    "timezone": "Etc/UTC",
+                                    "theme": "dark",
+                                    "style": "1",
+                                    "locale": "en",
+                                    "toolbar_bg": "#0A1F44",
+                                    "enable_publishing": false,
+                                    "hide_top_toolbar": false,
+                                    "hide_legend": false,
+                                    "save_image": false,
+                                    "container_id": "tradingview_eth",
+                                    "height": "400"
+                                });
+                            </script>
+                        </div>
+                        <!-- TradingView Widget END -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Market Overview Widget -->
+            <div class="mt-5" data-aos="fade-up" data-aos-delay="200">
+                <div style="background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); backdrop-filter: blur(10px);">
+                    <h3 style="color: var(--accent); font-size: 1.5rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-chart-bar" style="font-size: 1.5rem;"></i> Top Cryptocurrencies
+                    </h3>
+                    <!-- TradingView Market Overview Widget BEGIN -->
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                        {
+                            "colorTheme": "dark",
+                            "dateRange": "1D",
+                            "showChart": true,
+                            "locale": "en",
+                            "width": "100%",
+                            "height": "450",
+                            "largeChartUrl": "",
+                            "isTransparent": true,
+                            "showSymbolLogo": true,
+                            "showFloatingTooltip": true,
+                            "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
+                            "plotLineColorFalling": "rgba(41, 98, 255, 1)",
+                            "gridLineColor": "rgba(240, 243, 250, 0)",
+                            "scaleFontColor": "rgba(209, 212, 220, 1)",
+                            "belowLineFillColorGrowing": "rgba(41, 98, 255, 0.12)",
+                            "belowLineFillColorFalling": "rgba(41, 98, 255, 0.12)",
+                            "belowLineFillColorGrowingBottom": "rgba(41, 98, 255, 0)",
+                            "belowLineFillColorFallingBottom": "rgba(41, 98, 255, 0)",
+                            "symbolActiveColor": "rgba(41, 98, 255, 0.12)",
+                            "tabs": [
+                                {
+                                    "title": "Crypto",
+                                    "symbols": [
+                                        {"s": "BINANCE:BTCUSDT", "d": "Bitcoin"},
+                                        {"s": "BINANCE:ETHUSDT", "d": "Ethereum"},
+                                        {"s": "BINANCE:BNBUSDT", "d": "BNB"},
+                                        {"s": "BINANCE:SOLUSDT", "d": "Solana"},
+                                        {"s": "BINANCE:XRPUSDT", "d": "XRP"},
+                                        {"s": "BINANCE:ADAUSDT", "d": "Cardano"}
+                                    ],
+                                    "originalTitle": "Crypto"
+                                }
+                            ]
+                        }
+                        </script>
+                    </div>
+                    <!-- TradingView Market Overview Widget END -->
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <!-- Features Section -->
     <section class="features-section" id="features">
         <div class="container">
@@ -1386,77 +1515,74 @@
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
                 <h2 class="display-4 fw-bold" style="color: #fff;">Meet Coach JV</h2>
-                <p class="lead" style="color: rgba(255,255,255,0.8);">Learn crypto strategies and wealth-building from Coach JV's YouTube channel</p>
+                <p class="lead" style="color: rgba(255,255,255,0.8);">Watch crypto education videos and learn wealth-building strategies</p>
                 <a href="https://www.youtube.com/@thecoachjv" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px; padding: 12px 30px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--primary); border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s;">
-                    <i class="fab fa-youtube me-2"></i>Visit Coach JV's Channel
+                    <i class="fab fa-youtube me-2"></i>Visit Full Channel
                 </a>
             </div>
             
             <div class="video-grid">
-                <!-- Video 1: Crypto Bull Run Exit Strategy -->
+                <!-- Video 1: Crypto Bull Run Exit Strategy - EMBEDDED -->
                 <div class="video-card" data-aos="fade-up" data-aos-delay="0">
-                    <a href="https://www.youtube.com/@thecoachjv" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
-                        <div style="position: relative;">
-                            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&q=80" alt="Crypto Bull Run Exit Strategy" class="video-thumbnail" />
-                            <div class="video-overlay">
-                                <div class="play-button">
-                                    <i class="fas fa-play" style="margin-left: 4px;"></i>
-                                </div>
-                            </div>
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px;">
+                        <iframe 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px;"
+                            src="https://www.youtube.com/embed/F_HVfz_IcgY" 
+                            title="Crypto Bull Run Exit Strategy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Crypto Bull Run Exit Strategy</h3>
+                        <p class="video-description">Learn how to lock in profits during crypto bull runs with proven exit strategies.</p>
+                        <div class="video-meta">
+                            <span><i class="fab fa-youtube me-1" style="color: #FF0000;"></i> 175K+ views</span>
+                            <span><i class="fas fa-fire me-1" style="color: var(--accent);"></i> Most Popular</span>
                         </div>
-                        <div class="video-info">
-                            <h3 class="video-title">Crypto Bull Run Exit Strategy</h3>
-                            <p class="video-description">Learn how to lock in profits during crypto bull runs with proven exit strategies.</p>
-                            <div class="video-meta">
-                                <span><i class="fab fa-youtube me-1" style="color: #FF0000;"></i> 175K+ views</span>
-                                <span><i class="fas fa-fire me-1" style="color: var(--accent);"></i> Most Popular</span>
-                            </div>
-                        </div>
-                    </a>
+                    </div>
                 </div>
                 
-                <!-- Video 2: The Crypto Trap -->
+                <!-- Video 2: Latest Coach JV Education - EMBEDDED -->
                 <div class="video-card" data-aos="fade-up" data-aos-delay="100">
-                    <a href="https://www.youtube.com/@thecoachjv" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
-                        <div style="position: relative;">
-                            <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=500&q=80" alt="The Crypto Trap" class="video-thumbnail" />
-                            <div class="video-overlay">
-                                <div class="play-button">
-                                    <i class="fas fa-play" style="margin-left: 4px;"></i>
-                                </div>
-                            </div>
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px;">
+                        <iframe 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px;"
+                            src="https://www.youtube.com/embed/OVIarmzob8I" 
+                            title="XRP ETF The Next Big Catalyst"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">XRP ETF: The Next Big Catalyst</h3>
+                        <p class="video-description">Latest crypto market analysis and investment opportunities from Coach JV.</p>
+                        <div class="video-meta">
+                            <span><i class="fab fa-youtube me-1" style="color: #FF0000;"></i> Latest</span>
+                            <span><i class="fas fa-chart-line me-1" style="color: var(--accent);"></i> Market Update</span>
                         </div>
-                        <div class="video-info">
-                            <h3 class="video-title">The Crypto Trap: Why Most Fail</h3>
-                            <p class="video-description">Discover common mistakes investors make and how to avoid them with Coach JV.</p>
-                            <div class="video-meta">
-                                <span><i class="fab fa-youtube me-1" style="color: #FF0000;"></i> 46K+ views</span>
-                                <span><i class="fas fa-graduation-cap me-1" style="color: var(--accent);"></i> Educational</span>
-                            </div>
-                        </div>
-                    </a>
+                    </div>
                 </div>
                 
-                <!-- Video 3: 3T Warrior Academy -->
+                <!-- Video 3: 3T Warrior Academy Playlist - EMBEDDED -->
                 <div class="video-card" data-aos="fade-up" data-aos-delay="200">
-                    <a href="https://www.youtube.com/playlist?list=PLGM5sbjMEcQ4ElIbv7wSuKizhLZYiuAeN" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
-                        <div style="position: relative;">
-                            <img src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=500&q=80" alt="3T Warrior Academy" class="video-thumbnail" />
-                            <div class="video-overlay">
-                                <div class="play-button">
-                                    <i class="fas fa-play" style="margin-left: 4px;"></i>
-                                </div>
-                            </div>
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px;">
+                        <iframe 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px;"
+                            src="https://www.youtube.com/embed/videoseries?list=PLGM5sbjMEcQ4ElIbv7wSuKizhLZYiuAeN" 
+                            title="Coach JV Education Playlist"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">3T Warrior Academy Education</h3>
+                        <p class="video-description">Complete crypto education playlist covering strategies, security, and wealth building.</p>
+                        <div class="video-meta">
+                            <span><i class="fab fa-youtube me-1" style="color: #FF0000;"></i> Full Playlist</span>
+                            <span><i class="fas fa-list-ul me-1" style="color: var(--accent);"></i> 20+ Videos</span>
                         </div>
-                        <div class="video-info">
-                            <h3 class="video-title">3T Warrior Academy Education</h3>
-                            <p class="video-description">Complete crypto education playlist covering strategies, security, and wealth building.</p>
-                            <div class="video-meta">
-                                <span><i class="fab fa-youtube me-1" style="color: #FF0000;"></i> Full Playlist</span>
-                                <span><i class="fas fa-list-ul me-1" style="color: var(--accent);"></i> 20+ Videos</span>
-                            </div>
-                        </div>
-                    </a>
+                    </div>
                 </div>
             </div>
             
@@ -1473,7 +1599,7 @@
                     </a>
                 </div>
                 <p style="color: rgba(255,255,255,0.6); margin-top: 25px; font-size: 0.9rem;">
-                    <i class="fas fa-info-circle me-2"></i>Click any video to watch on YouTube. New crypto education videos posted weekly!
+                    <i class="fas fa-play-circle me-2"></i>Watch videos directly on our site. New content uploaded weekly!
                 </p>
             </div>
         </div>
