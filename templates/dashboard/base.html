@@ -345,21 +345,26 @@
             <li><a href="{% url 'profile' %}" class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
                 <i class="fas fa-user"></i> Profile
             </a></li>
+            <li><a href="{% url 'transaction_history' %}" class="{% if request.resolver_match.url_name == 'transaction_history' %}active{% endif %}">
+                <i class="fas fa-history"></i> Transactions
+            </a></li>
+            {% if user.is_staff %}
             <li><a href="/admin/">
                 <i class="fas fa-cog"></i> Admin Panel
             </a></li>
-            <li><a href="/admin/logout/">
+            {% endif %}
+            <li><a href="{% url 'logout' %}">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a></li>
         </ul>
         
         <div class="sidebar-section">Support</div>
         <ul class="sidebar-nav">
-            <li><a href="#">
+            <li><a href="{% url 'support_tickets' %}" class="{% if request.resolver_match.url_name == 'support_tickets' %}active{% endif %}">
                 <i class="fas fa-question-circle"></i> Help Center
             </a></li>
-            <li><a href="#">
-                <i class="fas fa-headset"></i> Live Chat
+            <li><a href="{% url 'create_ticket' %}" class="{% if request.resolver_match.url_name == 'create_ticket' %}active{% endif %}">
+                <i class="fas fa-headset"></i> Contact Support
             </a></li>
         </ul>
     </aside>

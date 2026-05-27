@@ -27,6 +27,7 @@ urlpatterns = [
     path('dashboard/mining/', views.mining_view, name='mining'),
     path('dashboard/p2p/', views.p2p_view, name='p2p'),
     path('dashboard/profile/', views.profile_view, name='profile'),
+    path('dashboard/transactions/', views.transaction_history_view, name='transaction_history'),
     
     # Investment Pools
     path('dashboard/pools/', views.investment_pools_view, name='investment_pools'),
@@ -38,6 +39,7 @@ urlpatterns = [
     # NEW FEATURES
     # KYC
     path('dashboard/kyc/submit/', kyc_submit_view, name='kyc_submit'),
+    path('dashboard/kyc/resubmit/', kyc_submit_view, name='kyc_resubmit'),
     
     # Support Tickets
     path('dashboard/support/', support_tickets_view, name='support_tickets'),
