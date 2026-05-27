@@ -580,6 +580,7 @@ def pool_detail_view(request, pool_id):
         'total_investors': total_investors,
         'winning_trades': winning_trades,
         'losing_trades': losing_trades,
+        'now': timezone.now(),
     }
     
     return render(request, 'dashboard/pool_detail.html', context)
@@ -842,3 +843,58 @@ def my_investments_view(request):
     
     return render(request, 'dashboard/my_investments.html', context)
 
+
+@login_required
+def transaction_history_view(request):
+    """View all user transactions with filtering and pagination"""
+    from django.core.paginator import Paginator
+    
+    # Get all transactions for the user
+    transactions = Transaction.objects.filter(user=request.user).order_by('-created_at')
+    
+    # Apply filters
+    tx_type = request.GET.get('type')
+    status = request.GET.get('status')
+    currency = request.GET.get('currency')
+    date_range = request.GET.get('date_range', 'month')
+    
+    if tx_type:
+        transactions = transactions.filter(type=tx_type)
+    if status:
+        transactions = transactions.filter(status=status)
+    if currency:
+        transactions = transactions.filter(currency=currency)
+    
+    # Date filtering
+    if date_range == 'today':
+        transactions = transactions.filter(created_at__date=timezone.now().date())
+    elif date_range == 'week':
+        transactions = transactions.filter(created_at__gte=timezone.now() - timezone.timedelta(days=7))
+    elif date_range == 'month':
+        transactions = transactions.filter(created_at__gte=timezone.now() - timezone.timedelta(days=30))
+    elif date_range == 'year':
+        transactions = transactions.filter(created_at__gte=timezone.now() - timezone.timedelta(days=365))
+    
+    # Calculate summaries
+    total_deposits = transactions.filter(type='deposit', status='completed').aggregate(
+        total=Sum('amount'))['total'] or Decimal('0')
+    total_withdrawals = transactions.filter(type='withdrawal', status='completed').aggregate(
+        total=Sum('amount'))['total'] or Decimal('0')
+    total_trades = transactions.filter(type='trade').count()
+    mining_rewards = transactions.filter(type='mining', status='completed').aggregate(
+        total=Sum('amount'))['total'] or Decimal('0')
+    
+    # Paginate
+    paginator = Paginator(transactions, 20)
+    page_number = request.GET.get('page', 1)
+    transactions_page = paginator.get_page(page_number)
+    
+    context = {
+        'transactions': transactions_page,
+        'total_deposits': total_deposits,
+        'total_withdrawals': total_withdrawals,
+        'total_trades': total_trades,
+        'mining_rewards': mining_rewards,
+    }
+    
+    return render(request, 'dashboard/transaction_history.html', context)

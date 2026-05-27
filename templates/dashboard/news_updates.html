@@ -142,7 +142,7 @@
             <h4 class="mb-3"><i class="fas fa-lightbulb"></i> CoachJV Insights</h4>
             
             {% for article in articles %}
-            <div class="news-card" onclick="location.href='{% url 'news_detail' article.id %}'">
+            <div class="news-card">
                 <div class="mb-2">
                     <span class="news-category category-{{ article.category }}">
                         {{ article.get_category_display }}
@@ -155,9 +155,9 @@
                     <small class="text-muted">
                         <i class="fas fa-user"></i> {{ article.author.get_full_name|default:"Admin" }}
                     </small>
-                    <a href="{% url 'news_detail' article.id %}" class="btn btn-sm btn-outline-primary">
+                    <button class="btn btn-sm btn-outline-primary">
                         Read More <i class="fas fa-arrow-right"></i>
-                    </a>
+                    </button>
                 </div>
             </div>
             {% empty %}

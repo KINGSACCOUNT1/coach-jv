@@ -9,15 +9,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #00d4ff;
+            --primary: #d4af37;
+            --secondary: #f4e5b0;
+            --accent: #d4af37;
             --success: #00ff88;
             --danger: #ff4757;
-            --dark-bg: #0a0e27;
-            --card-bg: #141932;
-            --sidebar-bg: #0f1229;
-            --border-color: rgba(102, 126, 234, 0.2);
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --sidebar-bg: #0d0d0d;
+            --border-color: rgba(212, 175, 55, 0.2);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -346,33 +346,33 @@
     <div class="sidebar">
         <div class="logo"><i class="fas fa-bolt"></i> CoachJVTech</div>
         
-        <a href="/dashboard/" class="nav-item active">
+        <a href="{% url 'dashboard' %}" class="nav-item active">
             <i class="fas fa-home"></i>
             <span class="nav-text">Dashboard</span>
         </a>
-        <a href="/dashboard/pools/" class="nav-item">
+        <a href="{% url 'investment_pools' %}" class="nav-item">
             <i class="fas fa-layer-group"></i>
             <span class="nav-text">Investment Pools</span>
         </a>
-        <a href="/dashboard/wallet/" class="nav-item">
+        <a href="{% url 'wallet' %}" class="nav-item">
             <i class="fas fa-wallet"></i>
             <span class="nav-text">Wallet</span>
         </a>
-        <a href="/dashboard/trading/" class="nav-item">
+        <a href="{% url 'trading' %}" class="nav-item">
             <i class="fas fa-chart-line"></i>
             <span class="nav-text">Trading</span>
         </a>
-        <a href="/dashboard/transactions/" class="nav-item">
+        <a href="{% url 'transaction_history' %}" class="nav-item">
             <i class="fas fa-exchange-alt"></i>
             <span class="nav-text">Transactions</span>
         </a>
-        <a href="/dashboard/profile/" class="nav-item">
+        <a href="{% url 'profile' %}" class="nav-item">
             <i class="fas fa-user"></i>
             <span class="nav-text">Profile</span>
         </a>
         
         <div style="margin-top: auto; padding-top: 30px;">
-            <a href="/logout/" class="nav-item" style="color: var(--danger);">
+            <a href="{% url 'logout' %}" class="nav-item" style="color: var(--danger);">
                 <i class="fas fa-sign-out-alt"></i>
                 <span class="nav-text">Logout</span>
             </a>
@@ -452,7 +452,7 @@
         <div class="pools-section">
             <div class="section-header">
                 <h2 class="section-title">Your Investment Pools</h2>
-                <a href="/dashboard/pools/" class="btn-view-all">View All →</a>
+                <a href="{% url 'investment_pools' %}" class="btn-view-all">View All →</a>
             </div>
             
             <div class="pools-grid">
@@ -490,7 +490,7 @@
                         </div>
                     </div>
                     
-                    <button class="btn-invest">View Details</button>
+                    <a href="{% url 'pool_detail' share.pool.id %}" class="btn-invest" style="text-decoration: none; text-align: center;">View Details</a>
                 </div>
                 {% empty %}
                 <div class="pool-card" style="text-align: center; grid-column: 1 / -1;">
@@ -498,7 +498,7 @@
                     <p style="color: rgba(255,255,255,0.6); margin-bottom: 20px;">
                         You haven't invested in any pools yet.
                     </p>
-                    <a href="/dashboard/pools/" class="btn-invest" style="max-width: 300px; margin: 0 auto; display: block; text-decoration: none;">
+                    <a href="{% url 'investment_pools' %}" class="btn-invest" style="max-width: 300px; margin: 0 auto; display: block; text-decoration: none;">
                         Browse Investment Pools
                     </a>
                 </div>
@@ -509,7 +509,7 @@
         <!-- Recent Activity -->
         <div class="section-header">
             <h2 class="section-title">Recent Activity</h2>
-            <a href="/dashboard/transactions/" class="btn-view-all">View All →</a>
+            <a href="{% url 'transaction_history' %}" class="btn-view-all">View All →</a>
         </div>
         
         <div class="activity-card">
