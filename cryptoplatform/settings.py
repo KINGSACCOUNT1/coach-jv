@@ -21,6 +21,12 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.c
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://coachjvtech.us',
+    'https://www.coachjvtech.us',
+    'https://*.onrender.com',
+]
+
 # Jazzmin Admin Configuration
 JAZZMIN_SETTINGS = {
     "site_title": "CoachJVTech Admin",
